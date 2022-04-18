@@ -1,0 +1,25 @@
+{
+    "name": "hasty",
+    "displayName": "Hasty",
+    "description": "Extension for CS132 Hasty language",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.66.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "hasty",
+            "aliases": ["hasty", "hasty"],
+            "extensions": [".hasty"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "hasty",
+            "scopeName": "source.hasty",
+            "path": "./syntaxes/hasty.tmLanguage.json"
+        }]
+    }
+}

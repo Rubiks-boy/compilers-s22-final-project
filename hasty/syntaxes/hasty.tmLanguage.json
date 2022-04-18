@@ -1,0 +1,111 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "hasty",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#type"
+		},
+		{
+			"include": "#expression"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [{
+				"name": "comment.line.double-slash",
+				"begin": "//",
+				"end": "$"
+			}]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"name": "constant.language.boolean.hasty",
+					"match": "\\b(true|false)\\b"
+				},
+				{
+					"name": "constant.language.nil.hasty",
+					"match": "\\b(nil)\\b"
+				},
+				{
+					"name": "constant.numeric.hasty",
+					"match": "\\b(0|[1-9][0-9]*|0x[0-9a-fA-F]+)\\b"
+				},
+				{
+					"name": "string.quoted.double.hasty",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.hasty",
+							"match": "\\\\."
+						}
+					]
+				}
+			]
+		},
+		"type": {
+			"patterns": [
+				{
+					"name": "support.type.hasty",
+					"match": "\\b(Bool|Int|String|Void)\\b"
+				}
+			]
+		},
+		"expression": {
+			"patterns": [
+				{
+					"include": "#constants"
+				},
+				{
+					"name": "entity.name.function",
+					"begin": "[a-zA-Z][a-zA-Z0-9]*[\\s]*\\(",
+					"end":"\\)",
+					"patterns": [
+						{
+							"include": "$self"
+						}
+					]
+				},
+				{
+					"name": "variable.other",
+					"match":"[a-zA-Z][a-zA-Z0-9]*"
+				},
+				{
+					"include": "#operators"
+				}
+			]
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.operators.hasty",
+					"match": "[\\+|\\-|\\*|\\/|\\!\\=|\\<|\\>|\\<\\=|\\>\\=|\\=\\=|\\&\\&|\\?\\?|\\-\\>|\\:|\\|\\||\\!]"
+				},
+				{
+					"name": "keyword.operator.dot.hasty",
+					"match": "\\."
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.hasty",
+					"match": "\\b(else|func|if|return|while|var|class)\\b"
+				},
+				{
+					"name": "support.function.hasty",
+					"match": "\\b(print|super|init|cs132start)\\b"
+				}
+			]
+		}
+	},
+	"scopeName": "source.hasty"
+}
