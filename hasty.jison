@@ -98,25 +98,25 @@ Program
     ;
 
 Statement
-    : IF Expression Block                            { $$ = {statementType: 'If', cond: $2, ifCase: $3, elseCase: {statementType: 'Block', block: []}}; }
-    | IF Expression Block ELSE Statement             { $$ = {statementType: 'If', cond: $2, ifCase: $3, elseCase: $5}; }
+    : IF Expression Block                            { $$ = {statementType: 'If', condition: $2, ifCase: $3, elseCase: {statementType: 'Block', block: []}}; }
+    | IF Expression Block ELSE Statement             { $$ = {statementType: 'If', condition: $2, ifCase: $3, elseCase: $5}; }
     | Block                                          { $$ = {statementType: 'Block', block: $1}; }
-    | WHILE Expression Block                         { $$ = {statementType: 'While', cond: $2, body: $3}; }
+    | WHILE Expression Block                         { $$ = {statementType: 'While', condition: $2, body: $3}; }
     | RETURN SEMI                                    { $$ = {statementType: 'Return'}; }
     | RETURN Expression SEMI                         { $$ = {statementType: 'Return', returnValue: $2}; }
     | PRINT LPAREN Expression RPAREN SEMI            { $$ = {statementType: 'Print', printValue: $3}; }
-    | Expression ASSIGN Expression SEMI              { $$ = {statementType: 'Assign', lhs: $1, rhs: $3}; }
-    | VAR IDENT COLON Type ASSIGN Expression SEMI    { $$ = {statementType: 'VarDecl', lhs: $2, type: $4, rhs: $6}; }
+    | Expression ASSIGN Expression SEMI              { $$ = {statementType: 'Assign', leftSide: $1, rightSide: $3}; }
+    | VAR IDENT COLON Type ASSIGN Expression SEMI    { $$ = {statementType: 'VarDecl', leftSide: $2, type: $4, rightSide: $6}; }
     | Expression SEMI                                { $$ = {statementType: 'Expr', expr: $1}; }
     ;
 
 Statements 
-    :                      { $$ = [] }
-    | Statement Statements { $$ = [$1].concat($2) }
+    :                         { $$ = [] }
+    | Statement Statements    { $$ = [$1].concat($2) }
     ;
 
 Block
-    : LBRACE Statements RBRACE  { $$ = {statementType: 'Block', block: $2} }
+    : LBRACE Statements RBRACE    { $$ = {statementType: 'Block', block: $2} }
     ;
 
 Expression
@@ -125,23 +125,23 @@ Expression
     | SCONST                                                   { $$ = {exprType: 'ConstS', value: $1}; }
     | IDENT                                                    { $$ = {exprType: 'Var', identifier: $1}; }
 
-    | MINUS Expression %prec UNARY_MINUS                       { $$ = {exprType: 'Uop', op: 'NegOp', expr: $2}; }
-    | BANG Expression                                          { $$ = {exprType: 'Uop', op: 'NotOp', expr: $2}; }
+    | MINUS Expression %prec UNARY_MINUS                       { $$ = {exprType: 'Uop', op: 'Neg', expr: $2}; }
+    | BANG Expression                                          { $$ = {exprType: 'Uop', op: 'Not', expr: $2}; }
 
-    | Expression PLUS Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'PlusOp', expr2: $3}; }
-    | Expression MINUS Expression                              { $$ = {exprType: 'Bop', expr1: $1, op: 'MinusOp', expr2: $3}; }
-    | Expression STAR Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'TimesOp', expr2: $3}; }
-    | Expression SLASH Expression                              { $$ = {exprType: 'Bop', expr1: $1, op: 'DivOp', expr2: $3}; }
+    | Expression PLUS Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'Plus', expr2: $3}; }
+    | Expression MINUS Expression                              { $$ = {exprType: 'Bop', expr1: $1, op: 'Minus', expr2: $3}; }
+    | Expression STAR Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'Times', expr2: $3}; }
+    | Expression SLASH Expression                              { $$ = {exprType: 'Bop', expr1: $1, op: 'Div', expr2: $3}; }
 
-    | Expression EQEQ Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'EqOp', expr2: $3}; }
-    | Expression NEQEQ Expression                              { $$ = {exprType: 'Bop', expr1: $1, op: 'NeOp', expr2: $3}; }
-    | Expression LESS Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'LtOp', expr2: $3}; }
-    | Expression GREATER Expression                            { $$ = {exprType: 'Bop', expr1: $1, op: 'GtOp', expr2: $3}; }
-    | Expression LESSEQ Expression                             { $$ = {exprType: 'Bop', expr1: $1, op: 'LeOp', expr2: $3}; }
-    | Expression GREATEREQ Expression                          { $$ = {exprType: 'Bop', expr1: $1, op: 'GeOp', expr2: $3}; }
+    | Expression EQEQ Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'Eq', expr2: $3}; }
+    | Expression NEQEQ Expression                              { $$ = {exprType: 'Bop', expr1: $1, op: 'Ne', expr2: $3}; }
+    | Expression LESS Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'Lt', expr2: $3}; }
+    | Expression GREATER Expression                            { $$ = {exprType: 'Bop', expr1: $1, op: 'Gt', expr2: $3}; }
+    | Expression LESSEQ Expression                             { $$ = {exprType: 'Bop', expr1: $1, op: 'Le', expr2: $3}; }
+    | Expression GREATEREQ Expression                          { $$ = {exprType: 'Bop', expr1: $1, op: 'Ge', expr2: $3}; }
 
-    | Expression ANDAND Expression                             { $$ = {exprType: 'Bop', expr1: $1, op: 'AndOp', expr2: $3}; }
-    | Expression OROR Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'OrOp', expr2: $3}; }
+    | Expression ANDAND Expression                             { $$ = {exprType: 'Bop', expr1: $1, op: 'And', expr2: $3}; }
+    | Expression OROR Expression                               { $$ = {exprType: 'Bop', expr1: $1, op: 'Or', expr2: $3}; }
 
     | Expression DOT IDENT                                     { $$ = {exprType: 'Proj', expr: $1, value: $3}; }
 
@@ -152,12 +152,12 @@ Expression
 
     | Expression QUERY Expression COLON Expression             { $$ = {exprType: 'Ternary', expr1: $1, expr2: $3, expr3: $5}; }
 
-    | IDENT LPAREN Expressionz RPAREN                          { $$ = {exprType: 'Call', funcName: $1, arguments: $3}; }
+    | IDENT LPAREN Expressionz RPAREN                          { $$ = {exprType: 'Call', functionName: $1, arguments: $3}; }
 
     | LPAREN Expression RPAREN                                 { $$ = $2; }
 
-    | CLASSNAME DOT IDENT LPAREN Expressionz RPAREN            { $$ = {exprType: 'StaticCall', className: $1, funcName: $3, arguments: $5}; }
-    | Expression DOT IDENT LPAREN Expressionz RPAREN           { $$ = {exprType: 'Invoke', className: $1, funcName: $3, arguments: $5}; }
+    | CLASSNAME DOT IDENT LPAREN Expressionz RPAREN            { $$ = {exprType: 'StaticCall', className: $1, functionName: $3, arguments: $5}; }
+    | Expression DOT IDENT LPAREN Expressionz RPAREN           { $$ = {exprType: 'Invoke', className: $1, functionName: $3, arguments: $5}; }
     | CLASSNAME LPAREN Expressionz RPAREN                      { $$ = {exprType: 'New', className: $1, arguments: $3}; }
 
     | LBRACKET Recordz RBRACKET                                { $$ = {exprType: 'Record', records: $2}; }
@@ -165,84 +165,86 @@ Expression
     ;
 
 Expressionz
-    :                                                          { $$ = [] }
-    | Expressions                                              { $$ = $1 }
+    :                { $$ = [] }
+    | Expressions    { $$ = $1 }
     ;
 
 Expressions
-    : Expression { $$ = [$1] }
-    | Expression COMMA Expressions { $$ = [$1].concat($3) }
+    : Expression                      { $$ = [$1] }
+    | Expression COMMA Expressions    { $$ = [$1].concat($3) }
     ;
 
 Type 
-    : INT    { $$ = {type: 'Int'}; }
-    | BOOL   { $$ = {type: 'Bool'}; }
-    | STRING { $$ = {type: 'String'}; }
-    | Type QUERY { $$ = {type: 'Optional', optionalTy: $1}; }
-    | VOID   { $$ = {type: 'Void'}; }
-    | CLASSNAME   { $$ = {type: 'Class', className: $1}; }
-    | LBRACKET Parameterz RBRACKET { $$ = {type: 'Record', parameters: $2}; }
+    : INT                             { $$ = {type: 'Int'}; }
+    | BOOL                            { $$ = {type: 'Bool'}; }
+    | STRING                          { $$ = {type: 'String'}; }
+    | Type QUERY                      { $$ = {type: 'Optional', optionalType: $1}; }
+    | VOID                            { $$ = {type: 'Void'}; }
+    | CLASSNAME                       { $$ = {type: 'Class', className: $1}; }
+    | LBRACKET Parameterz RBRACKET    { $$ = {type: 'Record', parameters: $2}; }
     ;
 
 Declaration
-    : FUNC IDENT LPAREN Parameterz RPAREN ARROW Type Block  { $$ = {declType: 'Func', funcName: $2, parameters: $4, returnType: $7, body: $8}; }
-    | CLASS CLASSNAME Superclass LBRACE Fieldz Constructor Methodz RBRACE { $$ = {declType: 'Class', className: $2, superClass: $3, fields: $5, constructor: $6, methods: $7}; }
+    : FUNC IDENT LPAREN Parameterz RPAREN ARROW Type Block  
+        { $$ = {declType: 'Func', functionName: $2, parameters: $4, returnType: $7, body: $8}; }
+    | CLASS CLASSNAME Superclass LBRACE Fieldz Constructor Methodz RBRACE 
+        { $$ = {declType: 'Class', className: $2, superClass: $3, fields: $5, constructor: $6, methods: $7}; }
     ;
 
 Declarations
-    : { $$ = []; }
-    | Declaration Declarations { $$ = [$1].concat($2); }
+    :                             { $$ = []; }
+    | Declaration Declarations    { $$ = [$1].concat($2); }
     ;
 
 Parameterz
-    : { $$ = []; }
-    | Parameters { $$ = $1; }
+    :               { $$ = []; }
+    | Parameters    { $$ = $1; }
     ;
 
 Parameters
-    : Parameter { $$ = [$1]; }
-    | Parameter COMMA Parameters { $$ = [$1].concat($3); }
+    : Parameter                     { $$ = [$1]; }
+    | Parameter COMMA Parameters    { $$ = [$1].concat($3); }
     ;
 
 Parameter
-    : IDENT COLON Type { $$ = {identifier: $1, type: $3}; }
+    : IDENT COLON Type    { $$ = {identifier: $1, type: $3}; }
     ;
 
 Recordz 
-    : { $$ = []; }
-    | Records { $$ = $1; }
+    :            { $$ = []; }
+    | Records    { $$ = $1; }
     ;
 
 Records
-    : Record { $$ = [$1]; }
-    | Record COMMA Records { $$ = [$1].concat($3); }
+    : Record                  { $$ = [$1]; }
+    | Record COMMA Records    { $$ = [$1].concat($3); }
     ;
 
 Record
-    : IDENT ASSIGN Expression { $$ = {identifier: $1, value: $3}; }
+    : IDENT ASSIGN Expression    { $$ = {identifier: $1, value: $3}; }
     ;
 
 Superclass
-    :                   { $$ = undefined; }
-    | COLON CLASSNAME   { $$ = $2; }
+    :                    { $$ = undefined; }
+    | COLON CLASSNAME    { $$ = $2; }
     ;
 
 Field
-    : VAR IDENT COLON Type SEMI   { $$ = {identifier: $2, type: $4}; }
+    : VAR IDENT COLON Type SEMI    { $$ = {identifier: $2, type: $4}; }
     ;
 
 Fieldz
-    : { $$ = [] }
-    | Field Fieldz { $$ = [$1].concat($2) }
+    :                 { $$ = [] }
+    | Field Fieldz    { $$ = [$1].concat($2) }
     ;
 
 Constructor
-    : INIT LPAREN Parameterz RPAREN SuperInit Block { $$ = {parameters: $3, superInit: $5, body: $6}; }
+    : INIT LPAREN Parameterz RPAREN SuperInit Block    { $$ = {parameters: $3, superInit: $5, body: $6}; }
     ;
 
 SuperInit
-    :                                         { $$ = undefined }
-    | COLON SUPER LPAREN Expressionz RPAREN   { $$ = $4; }
+    :                                          { $$ = undefined }
+    | COLON SUPER LPAREN Expressionz RPAREN    { $$ = $4; }
     ;
 
 Method
@@ -255,6 +257,6 @@ Method
     ;
 
 Methodz
-    : { $$ = []; }
-    | Method Methodz { $$ = [$1].concat($2); }
+    :                   { $$ = []; }
+    | Method Methodz    { $$ = [$1].concat($2); }
     ;
