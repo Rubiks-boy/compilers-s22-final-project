@@ -112,7 +112,7 @@ Statement
 
 Statements 
     :                      { $$ = [] }
-    | Statement Statements { $$ = $1.concat($2) }
+    | Statement Statements { $$ = [$1].concat($2) }
     ;
 
 Block
@@ -171,7 +171,7 @@ Expressionz
 
 Expressions
     : Expression { $$ = [$1] }
-    | Expression COMMA Expressions { $$ = $1.concat($3) }
+    | Expression COMMA Expressions { $$ = [$1].concat($3) }
     ;
 
 Type 
@@ -191,7 +191,7 @@ Declaration
 
 Declarations
     : { $$ = []; }
-    | Declaration Declarations { $$ = $1.concat($2); }
+    | Declaration Declarations { $$ = [$1].concat($2); }
     ;
 
 Parameterz
@@ -201,7 +201,7 @@ Parameterz
 
 Parameters
     : Parameter { $$ = [$1]; }
-    | Parameter COMMA Parameters { $$ = $1.concat($3); }
+    | Parameter COMMA Parameters { $$ = [$1].concat($3); }
     ;
 
 Parameter
@@ -215,7 +215,7 @@ Recordz
 
 Records
     : Record { $$ = [$1]; }
-    | Record COMMA Records { $$ = $1.concat($3); }
+    | Record COMMA Records { $$ = [$1].concat($3); }
     ;
 
 Record
@@ -233,7 +233,7 @@ Field
 
 Fieldz
     : { $$ = [] }
-    | Field Fieldz { $$ = $1.concat($2) }
+    | Field Fieldz { $$ = [$1].concat($2) }
     ;
 
 Constructor
@@ -256,5 +256,5 @@ Method
 
 Methodz
     : { $$ = []; }
-    | Method Methodz { $$ = $1.concat($2); }
+    | Method Methodz { $$ = [$1].concat($2); }
     ;
