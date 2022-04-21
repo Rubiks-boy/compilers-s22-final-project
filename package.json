@@ -15,6 +15,12 @@
 	],
 	"main": "./out/extension.js",
     "contributes": {
+        "commands": [
+			{
+				"command": "cs132-hasty.helloWorld",
+				"title": "Hello World"
+			}
+		],
         "languages": [
             {
                 "id": "hasty",
