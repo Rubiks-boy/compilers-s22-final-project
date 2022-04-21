@@ -14,13 +14,12 @@
             {
                 "id": "hasty",
                 "aliases": [
-                    "hasty",
                     "hasty"
                 ],
                 "extensions": [
                     ".hasty"
                 ],
-                "configuration": "./language-configuration.json"
+                "configuration": "./syntaxes/hasty-language-configuration.json"
             }
         ],
         "grammars": [
