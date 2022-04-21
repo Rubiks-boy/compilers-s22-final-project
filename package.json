@@ -9,6 +9,10 @@
     "categories": [
         "Programming Languages"
     ],
+    "activationEvents": [
+        "onCommand:cs132-hasty.helloWorld"
+	],
+	"main": "./out/extension.js",
     "contributes": {
         "languages": [
             {
@@ -28,7 +32,13 @@
                 "scopeName": "source.hasty",
                 "path": "./syntaxes/hasty.tmLanguage.json"
             }
-        ]
+        ],
+        "commands": [
+			{
+				"command": "cs132-hasty.helloWorld",
+				"title": "Hello World"
+			}
+		]
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
