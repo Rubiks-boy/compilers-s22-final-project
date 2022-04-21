@@ -20,6 +20,26 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+
+	vscode.languages.registerHoverProvider('hasty', {
+		provideHover(document, position, token) {
+		  return {
+			contents: ['Hover Content']
+		  };
+		}
+	});
+
+	vscode.languages.registerDefinitionProvider('hasty', {
+		provideDefinition(document, position, token) {
+			return {
+				uri: vscode.Uri.file(document.fileName),
+				range: new vscode.Range(
+					new vscode.Position(0,1), 
+					new vscode.Position(1,2)
+			)};
+		}
+	});
+
 }
 
 // this method is called when your extension is deactivated
