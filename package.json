@@ -10,7 +10,8 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "onCommand:cs132-hasty.helloWorld"
+        "onCommand:cs132-hasty.helloWorld",
+        "onLanguage:hasty"
 	],
 	"main": "./out/extension.js",
     "contributes": {
