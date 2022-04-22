@@ -11,7 +11,7 @@ function unIndent(tab: string, input: string) {
   return input.substring(0, input.length - tab.length);
 }
 function undoNewLine(tab: string, indentLevel: number, lexedOutput: string) {
-  return unIndent(repeat(tab, indentLevel) + "\n", lexedOutput) + repeat(tab, indentLevel);
+  return unIndent(repeat(tab, indentLevel) + "\n", lexedOutput);
 }
 
 export function lint(lexer: any, indentChars: string) {
@@ -33,7 +33,7 @@ export function lint(lexer: any, indentChars: string) {
       // space after
       case "func":
       case "class":
-        if (numNewLineBefore === 1 && prevToken.type === '}'){
+        if (numNewLineBefore === 1 && prevToken.type === '}') {
           lexedOutput += '\n';
           lexedOutput += repeat(tab, indentLevel);
         }
@@ -73,7 +73,7 @@ export function lint(lexer: any, indentChars: string) {
         break;
       case "else":
         lexedOutput = undoNewLine(tab, indentLevel, lexedOutput);
-        lexedOutput += content;
+        lexedOutput += ' '+content;
         break;
       case 'NEWLINE':
         if (numNewLineBefore === 1 || (prevToken.type === 'COMMENT' && numNewLineBefore === 0)) {
@@ -96,7 +96,7 @@ export function lint(lexer: any, indentChars: string) {
         lexedOutput += content + "\n" + repeat(tab, indentLevel); // end of line character
         break;
       case 'COMMENT':
-        if (numNewLineBefore === 1 && prevToken.type === '}'){
+        if (numNewLineBefore === 1 && prevToken.type === '}') {
           lexedOutput += '\n';
           lexedOutput += repeat(tab, indentLevel);
         }
@@ -114,7 +114,7 @@ export function lint(lexer: any, indentChars: string) {
     else {
       numNewLineBefore += 1;
     }
-    
+
     currToken = lexer.lex();
   }
   return lexedOutput;
