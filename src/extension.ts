@@ -14,7 +14,7 @@ var grammar = fs.readFileSync(grammarPath, 'utf8');
 var lexer = new jisonLex(grammar);
 
 // imports for parsing
-const parser = require('../parsing/hasty');
+import * as parser from 'hasty-parser';
 
 // diagnostics about the current documents (e.g. parse errors)
 let diagnosticCollection: vscode.DiagnosticCollection;
