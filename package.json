@@ -11,6 +11,7 @@
     ],
     "activationEvents": [
         "onCommand:cs132-hasty.helloWorld",
+        "onCommand:cs132-hasty.parse",
         "onLanguage:hasty"
     ],
     "main": "./out/extension.js",
@@ -69,6 +70,10 @@
             {
                 "command": "cs132-hasty.helloWorld",
                 "title": "Hello World"
+            },
+            {
+                "command": "cs132-hasty.parse",
+                "title": "Parse hasty"
             }
         ]
     },

@@ -12,6 +12,9 @@ var grammarPath = path.join(__dirname, '../linting/hasty-for-linter.l');
 var grammar = fs.readFileSync(grammarPath, 'utf8');
 var lexer = new jisonLex(grammar);
 
+// imports for parsing
+const parser = require('../parsing/hasty');
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -30,6 +33,27 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(disposable);
+  
+  const parsing = vscode.commands.registerCommand('cs132-hasty.parse', () => {
+    // The code you place here will be executed every time your command is executed
+    // Display a message box to the user
+    vscode.window.showInformationMessage('Hasty parsing!');
+    const editor = vscode.window.activeTextEditor;
+    if (editor === undefined) {
+      return;
+    }
+    const document = editor.document;
+    const text = document.getText();
+    try {
+      const ast = parser.parse(text);
+      vscode.window.showInformationMessage(JSON.stringify(ast));
+    } catch (e: any) {
+      vscode.window.showErrorMessage(e.message);
+    }
+
+  });
+
+  context.subscriptions.push(parsing);
 
   vscode.languages.registerDocumentFormattingEditProvider('hasty', {
     provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions) {
