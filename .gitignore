@@ -1,1 +1,3 @@
-node_modules
+# Generated Files
+node_modules/
+out/
