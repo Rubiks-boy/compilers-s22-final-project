@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 
 // imports for linting 
-var lintPath = path.join(__dirname, '../linting/linter');
+var lintPath = path.join(__dirname, '../linting/hasty-linter');
 var lint = require(lintPath).lint;
 var jisonLex = require('jison-lex');
 var fs = require('fs');
