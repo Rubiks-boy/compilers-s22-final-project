@@ -4,7 +4,7 @@
 import * as vscode from 'vscode';
 import * as linter from './linting/hasty-linter';
 
-const lexer = require('./linting/hasty-lexer-for-linting').hastyLexerForLinting.lexer;
+const lexer = require('./linting/hasty-lexer-for-linting').hastyLexerForLinting;
 const parser = require('./parsing/hasty').parser;
 
 // diagnostics about the current documents (e.g. parse errors)
@@ -198,7 +198,7 @@ export function activate(context: vscode.ExtensionContext) {
 function getLintedText(document: vscode.TextDocument, space: string) {
   var input = document.getText();
   lexer.setInput(input);
-  var output = linter.lint(lexer.lexer, space);
+  var output = linter.lint(lexer, space);
   var startPos = new vscode.Position(0, 0);
   var endPos = document.lineAt(document.lineCount - 1).range.end;
   var range = new vscode.Range(startPos, endPos);
