@@ -53,6 +53,7 @@ const getParseError = (document: vscode.TextDocument): {diagnostic: vscode.Diagn
 
 const validateDocument = (document: vscode.TextDocument) => {
   diagnosticCollection.clear();
+  if (document.languageId !== 'hasty') {return;}
 
   const parseError = getParseError(document);
   if (parseError) {
