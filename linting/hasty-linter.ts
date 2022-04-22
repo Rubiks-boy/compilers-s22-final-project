@@ -50,6 +50,7 @@ export function lint(lexer: any, indentChars: string) {
       case "var":
       case ",":
       case ":":
+      case "?":
         lexedOutput += content + " ";
         break;
       // space between and after
@@ -58,7 +59,6 @@ export function lint(lexer: any, indentChars: string) {
       case "-":
       case "*":
       case "/":
-      case "?":
       case "||":
       case "&&":
       case "??":
@@ -119,6 +119,3 @@ export function lint(lexer: any, indentChars: string) {
   }
   return lexedOutput;
 }
-
-
-//# sourceMappingURL=linter.js.map
