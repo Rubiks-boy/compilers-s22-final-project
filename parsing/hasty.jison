@@ -93,8 +93,7 @@
 
 Program
     : Declarations EOF
-        { typeof console !== 'undefined' ? console.log(JSON.stringify($1, null, 2)) : print(JSON.stringify($1, null, 2));
-          return $1; }
+        { return $1; }
     ;
 
 Statement
