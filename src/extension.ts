@@ -15,6 +15,42 @@ var lexer = new jisonLex(grammar);
 // imports for parsing
 const parser = require('../parsing/hasty');
 
+// diagnostics about the current documents (e.g. parse errors)
+let diagnosticCollection: vscode.DiagnosticCollection;
+
+const getParseError = (document: vscode.TextDocument) => {
+    const text = document.getText();
+    try {
+      parser.parse(text);
+    } catch (e: any) {
+      const {hash} = e;
+      const {loc, line, expected, text, token} = e.hash;
+      const {first_line: firstLine, last_line: lastLine, first_column: firstCol, last_column: lastCol} = loc;
+      const startPos = new vscode.Position(firstLine - 1, firstCol);
+      const endPos = new vscode.Position(lastLine - 1, lastCol);
+      const range = new vscode.Range(startPos, endPos);
+      const message = `Parse error on line ${line} at '${text}': expected ${expected}`;
+      const diagnostic = new vscode.Diagnostic(range, message, vscode.DiagnosticSeverity.Error);
+      return diagnostic;
+    }
+    return null;
+};
+
+const validateDocument = (document: vscode.TextDocument) => {
+  diagnosticCollection.clear();
+
+  const error = getParseError(document);
+  if (error) {
+    diagnosticCollection.set(document.uri, [error]);
+  }
+};
+
+const onChange = (e: vscode.TextDocumentChangeEvent) => {
+  const document = e.document;
+  validateDocument(document);
+};
+
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -89,6 +125,12 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }
   });
+
+  // validate document and display problems
+  diagnosticCollection = vscode.languages.createDiagnosticCollection('hasty');
+  vscode.workspace.onDidOpenTextDocument(validateDocument, null, context.subscriptions);
+  vscode.workspace.onDidChangeTextDocument(onChange, null, context.subscriptions);
+  vscode.workspace.onDidCloseTextDocument(validateDocument, null, context.subscriptions);
 }
 
 function getLintedText(document: vscode.TextDocument, space: string) {
