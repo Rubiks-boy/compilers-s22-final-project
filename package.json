@@ -25,6 +25,27 @@
                     ".hasty"
                 ],
                 "configuration": "./syntaxes/hasty-language-configuration.json"
+            },
+            {
+                "id": "tasty",
+                "aliases": [
+                    "tasty"
+                ],
+                "extensions": [
+                    ".tasty"
+                ],
+                "configuration": "./syntaxes/tasty-language-configuration.json"
+            },
+            {
+                "id": "target",
+                "aliases": [
+                    "target",
+                    "norm target"
+                ],
+                "extensions": [
+                    ".nt"
+                ],
+                "configuration": "./syntaxes/target-language-configuration.json"
             }
         ],
         "grammars": [
@@ -32,6 +53,16 @@
                 "language": "hasty",
                 "scopeName": "source.hasty",
                 "path": "./syntaxes/hasty.tmLanguage.json"
+            },
+            {
+                "language": "tasty",
+                "scopeName": "source.tasty",
+                "path": "./syntaxes/tasty.tmLanguage.json"
+            },
+            {
+                "language": "target",
+                "scopeName": "source.target",
+                "path": "./syntaxes/target.tmLanguage.json"
             }
         ],
         "commands": [

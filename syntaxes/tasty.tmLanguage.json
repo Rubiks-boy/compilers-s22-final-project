@@ -1,0 +1,111 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "tasty",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#type"
+		},
+		{
+			"include": "#expression"
+		},
+		{
+			"include": "#constants"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [{
+				"name": "comment.line.double-slash",
+				"begin": "//",
+				"end": "$"
+			}]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"name": "constant.language.boolean.tasty",
+					"match": "\\b(true|false)\\b"
+				},
+				{
+					"name": "constant.language.nil.tasty",
+					"match": "\\b(nil)\\b"
+				},
+				{
+					"name": "constant.numeric.tasty",
+					"match": "\\b(0|[1-9][0-9]*|0x[0-9a-fA-F]+)\\b"
+				},
+				{
+					"name": "string.quoted.double.tasty",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.tasty",
+							"match": "\\\\."
+						}
+					]
+				}
+			]
+		},
+		"type": {
+			"patterns": [
+				{
+					"name": "support.type.tasty",
+					"match": "\\b(Bool|Int|String)\\b"
+				}
+			]
+		},
+		"expression": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"begin": "[a-z][a-zA-Z0-9]*[\\s]*\\(",
+					"end":"\\)",
+					"patterns": [
+						{
+							"include": "$self"
+						}
+					]
+				},
+				{
+					"name": "variable.other.ident",
+					"match":"[a-z][a-zA-Z0-9]*"
+				},
+				{
+					"name": "variable.other.temp",
+					"match":"%t[a-zA-Z0-9]*"
+				}
+			]
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.operators.tasty",
+					"match": "[\\+|\\-|\\*|\\/|\\!\\=|\\<|\\>|\\<\\=|\\>\\=|\\=\\=|\\&\\&|\\?\\?|\\-\\>|\\:|\\|\\||\\!|\\+s]"
+				},
+				{
+					"name": "keyword.operator.dot.tasty",
+					"match": "\\."
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.tasty",
+					"match": "\\b(else|func|if|return|while|var|class|Convert|Count|ReadLine)\\b"
+				}
+			]
+		}
+	},
+	"scopeName": "source.tasty"
+}
