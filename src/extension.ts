@@ -4,11 +4,11 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 
 // imports for linting 
-var lintPath = path.join(__dirname, '../linting/hasty-linter');
+var lintPath = path.join(__dirname, '../src/linting/hasty-linter');
 var lint = require(lintPath).lint;
 var jisonLex = require('jison-lex');
 var fs = require('fs');
-var grammarPath = path.join(__dirname, '../linting/hasty-for-linter.l');
+var grammarPath = path.join(__dirname, '../src/linting/hasty-for-linter.l');
 var grammar = fs.readFileSync(grammarPath, 'utf8');
 var lexer = new jisonLex(grammar);
 

@@ -73,7 +73,7 @@ export function lint(lexer: any, indentChars: string) {
         break;
       case "else":
         lexedOutput = undoNewLine(tab, indentLevel, lexedOutput);
-        lexedOutput += ' '+content;
+        lexedOutput += ' ' + content;
         break;
       case 'NEWLINE':
         if (numNewLineBefore === 1 || (prevToken.type === 'COMMENT' && numNewLineBefore === 0)) {
