@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.lint = void 0;
+
 function repeat(s: string, count: number) {
   if (count <= 0) {
     return '';

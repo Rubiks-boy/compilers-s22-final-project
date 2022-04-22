@@ -1,16 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code belo
 import * as vscode from 'vscode';
-import * as path from 'path';
+import * as linter from './linting/hasty-linter';
 
-// imports for linting 
-var lintPath = path.join(__dirname, '../src/linting/hasty-linter');
-var lint = require(lintPath).lint;
-var jisonLex = require('jison-lex');
-var fs = require('fs');
-var grammarPath = path.join(__dirname, '../src/linting/hasty-for-linter.l');
-var grammar = fs.readFileSync(grammarPath, 'utf8');
-var lexer = new jisonLex(grammar);
+const lexer = require('./linting/hasty-lexer-for-linting').hastyLexerForLinting.lexer;
 
 // imports for parsing
 const parser = require('../parsing/hasty');
@@ -136,7 +129,7 @@ export function activate(context: vscode.ExtensionContext) {
 function getLintedText(document: vscode.TextDocument, space: string) {
   var input = document.getText();
   lexer.setInput(input);
-  var output = lint(lexer, space);
+  var output = linter.lint(lexer.lexer, space);
   var startPos = new vscode.Position(0, 0);
   var endPos = document.lineAt(document.lineCount - 1).range.end;
   var range = new vscode.Range(startPos, endPos);
