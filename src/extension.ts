@@ -5,9 +5,7 @@ import * as vscode from 'vscode';
 import * as linter from './linting/hasty-linter';
 
 const lexer = require('./linting/hasty-lexer-for-linting').hastyLexerForLinting.lexer;
-
-// imports for parsing
-import * as parser from 'hasty-parser';
+const parser = require('./parsing/hasty').parser;
 
 // diagnostics about the current documents (e.g. parse errors)
 let diagnosticCollection: vscode.DiagnosticCollection;
