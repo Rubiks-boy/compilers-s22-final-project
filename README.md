@@ -10,6 +10,7 @@ Hasty
 - Hover to show type
 - Format Document
 - Error Diagnosis
+- Basic Autocomplete
 
 Tasty
 - Syntax Hilighting
@@ -20,6 +21,9 @@ NormTarget
 ## Known Issues
 
 If you see any issue in this extension, feel free to open a Github issue and/or a pull request.
+
+## How to publish extension to vscode
+https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 
 ## Release Notes
 
