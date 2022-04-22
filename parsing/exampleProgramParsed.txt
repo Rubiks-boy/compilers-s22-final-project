@@ -1,0 +1,1822 @@
+[
+  {
+    "declType": "Func",
+    "functionName": "expo",
+    "parameters": [
+      {
+        "identifier": "base",
+        "type": {
+          "type": "Int"
+        }
+      },
+      {
+        "identifier": "exponent",
+        "type": {
+          "type": "Int"
+        }
+      }
+    ],
+    "returnType": {
+      "type": "Int"
+    },
+    "body": {
+      "statementType": "Block",
+      "block": [
+        {
+          "statementType": "If",
+          "condition": {
+            "exprType": "Bop",
+            "expr1": {
+              "exprType": "Var",
+              "identifier": "exponent"
+            },
+            "op": "Eq",
+            "expr2": {
+              "exprType": "ConstI",
+              "value": 0
+            }
+          },
+          "ifCase": {
+            "statementType": "Block",
+            "block": [
+              {
+                "statementType": "Return",
+                "returnValue": {
+                  "exprType": "ConstI",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          "elseCase": {
+            "statementType": "Block",
+            "block": {
+              "statementType": "Block",
+              "block": [
+                {
+                  "statementType": "Return",
+                  "returnValue": {
+                    "exprType": "Bop",
+                    "expr1": {
+                      "exprType": "Var",
+                      "identifier": "base"
+                    },
+                    "op": "Times",
+                    "expr2": {
+                      "exprType": "Call",
+                      "functionName": "expo",
+                      "arguments": [
+                        {
+                          "exprType": "Var",
+                          "identifier": "base"
+                        },
+                        {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "Var",
+                            "identifier": "exponent"
+                          },
+                          "op": "Minus",
+                          "expr2": {
+                            "exprType": "ConstI",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "declType": "Func",
+    "functionName": "mod3",
+    "parameters": [
+      {
+        "identifier": "x",
+        "type": {
+          "type": "Int"
+        }
+      }
+    ],
+    "returnType": {
+      "type": "Int"
+    },
+    "body": {
+      "statementType": "Block",
+      "block": [
+        {
+          "statementType": "If",
+          "condition": {
+            "exprType": "Bop",
+            "expr1": {
+              "exprType": "Bop",
+              "expr1": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Var",
+                  "identifier": "x"
+                },
+                "op": "Div",
+                "expr2": {
+                  "exprType": "ConstI",
+                  "value": 3
+                }
+              },
+              "op": "Times",
+              "expr2": {
+                "exprType": "ConstI",
+                "value": 3
+              }
+            },
+            "op": "Eq",
+            "expr2": {
+              "exprType": "Var",
+              "identifier": "x"
+            }
+          },
+          "ifCase": {
+            "statementType": "Block",
+            "block": [
+              {
+                "statementType": "Return",
+                "returnValue": {
+                  "exprType": "ConstI",
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "elseCase": {
+            "statementType": "Block",
+            "block": []
+          }
+        },
+        {
+          "statementType": "If",
+          "condition": {
+            "exprType": "Bop",
+            "expr1": {
+              "exprType": "Bop",
+              "expr1": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "Var",
+                    "identifier": "x"
+                  },
+                  "op": "Plus",
+                  "expr2": {
+                    "exprType": "ConstI",
+                    "value": 2
+                  }
+                },
+                "op": "Div",
+                "expr2": {
+                  "exprType": "ConstI",
+                  "value": 3
+                }
+              },
+              "op": "Times",
+              "expr2": {
+                "exprType": "ConstI",
+                "value": 3
+              }
+            },
+            "op": "Eq",
+            "expr2": {
+              "exprType": "Bop",
+              "expr1": {
+                "exprType": "Var",
+                "identifier": "x"
+              },
+              "op": "Plus",
+              "expr2": {
+                "exprType": "ConstI",
+                "value": 2
+              }
+            }
+          },
+          "ifCase": {
+            "statementType": "Block",
+            "block": [
+              {
+                "statementType": "Return",
+                "returnValue": {
+                  "exprType": "ConstI",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          "elseCase": {
+            "statementType": "Block",
+            "block": []
+          }
+        },
+        {
+          "statementType": "Return",
+          "returnValue": {
+            "exprType": "ConstI",
+            "value": 2
+          }
+        }
+      ]
+    }
+  },
+  {
+    "declType": "Class",
+    "className": "Board",
+    "fields": [
+      {
+        "identifier": "state",
+        "type": {
+          "type": "Int"
+        }
+      }
+    ],
+    "constructor": {
+      "parameters": [],
+      "body": {
+        "statementType": "Block",
+        "block": [
+          {
+            "statementType": "Assign",
+            "leftSide": {
+              "exprType": "Proj",
+              "expr": {
+                "exprType": "Var",
+                "identifier": "self"
+              },
+              "value": "state"
+            },
+            "rightSide": {
+              "exprType": "ConstI",
+              "value": 0
+            }
+          },
+          {
+            "statementType": "Return"
+          }
+        ]
+      }
+    },
+    "methods": [
+      {
+        "type": "Virtual",
+        "name": "set",
+        "parameters": [
+          {
+            "identifier": "pos",
+            "type": {
+              "type": "Int"
+            }
+          },
+          {
+            "identifier": "val",
+            "type": {
+              "type": "Int"
+            }
+          }
+        ],
+        "returnType": {
+          "type": "Void"
+        },
+        "body": {
+          "statementType": "Block",
+          "block": [
+            {
+              "statementType": "Assign",
+              "leftSide": {
+                "exprType": "Proj",
+                "expr": {
+                  "exprType": "Var",
+                  "identifier": "self"
+                },
+                "value": "state"
+              },
+              "rightSide": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Proj",
+                  "expr": {
+                    "exprType": "Var",
+                    "identifier": "self"
+                  },
+                  "value": "state"
+                },
+                "op": "Plus",
+                "expr2": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "Var",
+                    "identifier": "val"
+                  },
+                  "op": "Times",
+                  "expr2": {
+                    "exprType": "Call",
+                    "functionName": "expo",
+                    "arguments": [
+                      {
+                        "exprType": "ConstI",
+                        "value": 3
+                      },
+                      {
+                        "exprType": "Var",
+                        "identifier": "pos"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Virtual",
+        "name": "get",
+        "parameters": [
+          {
+            "identifier": "pos",
+            "type": {
+              "type": "Int"
+            }
+          }
+        ],
+        "returnType": {
+          "type": "Int"
+        },
+        "body": {
+          "statementType": "Block",
+          "block": [
+            {
+              "statementType": "Return",
+              "returnValue": {
+                "exprType": "Call",
+                "functionName": "mod3",
+                "arguments": [
+                  {
+                    "exprType": "Bop",
+                    "expr1": {
+                      "exprType": "Proj",
+                      "expr": {
+                        "exprType": "Var",
+                        "identifier": "self"
+                      },
+                      "value": "state"
+                    },
+                    "op": "Div",
+                    "expr2": {
+                      "exprType": "Call",
+                      "functionName": "expo",
+                      "arguments": [
+                        {
+                          "exprType": "ConstI",
+                          "value": 3
+                        },
+                        {
+                          "exprType": "Var",
+                          "identifier": "pos"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Virtual",
+        "name": "getS",
+        "parameters": [
+          {
+            "identifier": "pos",
+            "type": {
+              "type": "Int"
+            }
+          }
+        ],
+        "returnType": {
+          "type": "String"
+        },
+        "body": {
+          "statementType": "Block",
+          "block": [
+            {
+              "statementType": "VarDecl",
+              "leftSide": "posVal",
+              "type": {
+                "type": "Int"
+              },
+              "rightSide": {
+                "exprType": "Invoke",
+                "className": {
+                  "exprType": "Var",
+                  "identifier": "self"
+                },
+                "functionName": "get",
+                "arguments": [
+                  {
+                    "exprType": "Var",
+                    "identifier": "pos"
+                  }
+                ]
+              }
+            },
+            {
+              "statementType": "If",
+              "condition": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Var",
+                  "identifier": "posVal"
+                },
+                "op": "Eq",
+                "expr2": {
+                  "exprType": "ConstI",
+                  "value": 1
+                }
+              },
+              "ifCase": {
+                "statementType": "Block",
+                "block": [
+                  {
+                    "statementType": "Return",
+                    "returnValue": {
+                      "exprType": "ConstS",
+                      "value": "\"X\""
+                    }
+                  }
+                ]
+              },
+              "elseCase": {
+                "statementType": "Block",
+                "block": []
+              }
+            },
+            {
+              "statementType": "If",
+              "condition": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Var",
+                  "identifier": "posVal"
+                },
+                "op": "Eq",
+                "expr2": {
+                  "exprType": "ConstI",
+                  "value": 2
+                }
+              },
+              "ifCase": {
+                "statementType": "Block",
+                "block": [
+                  {
+                    "statementType": "Return",
+                    "returnValue": {
+                      "exprType": "ConstS",
+                      "value": "\"O\""
+                    }
+                  }
+                ]
+              },
+              "elseCase": {
+                "statementType": "Block",
+                "block": []
+              }
+            },
+            {
+              "statementType": "Return",
+              "returnValue": {
+                "exprType": "ConstS",
+                "value": "\" \""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Virtual",
+        "name": "printBoard",
+        "parameters": [],
+        "returnType": {
+          "type": "Void"
+        },
+        "body": {
+          "statementType": "Block",
+          "block": [
+            {
+              "statementType": "Print",
+              "printValue": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "Bop",
+                    "expr1": {
+                      "exprType": "Bop",
+                      "expr1": {
+                        "exprType": "Invoke",
+                        "className": {
+                          "exprType": "Var",
+                          "identifier": "self"
+                        },
+                        "functionName": "getS",
+                        "arguments": [
+                          {
+                            "exprType": "ConstI",
+                            "value": 0
+                          }
+                        ]
+                      },
+                      "op": "Plus",
+                      "expr2": {
+                        "exprType": "ConstS",
+                        "value": "\"|\""
+                      }
+                    },
+                    "op": "Plus",
+                    "expr2": {
+                      "exprType": "Invoke",
+                      "className": {
+                        "exprType": "Var",
+                        "identifier": "self"
+                      },
+                      "functionName": "getS",
+                      "arguments": [
+                        {
+                          "exprType": "ConstI",
+                          "value": 1
+                        }
+                      ]
+                    }
+                  },
+                  "op": "Plus",
+                  "expr2": {
+                    "exprType": "ConstS",
+                    "value": "\"|\""
+                  }
+                },
+                "op": "Plus",
+                "expr2": {
+                  "exprType": "Invoke",
+                  "className": {
+                    "exprType": "Var",
+                    "identifier": "self"
+                  },
+                  "functionName": "getS",
+                  "arguments": [
+                    {
+                      "exprType": "ConstI",
+                      "value": 2
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "statementType": "Print",
+              "printValue": {
+                "exprType": "ConstS",
+                "value": "\"-+-+-\""
+              }
+            },
+            {
+              "statementType": "Print",
+              "printValue": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "Bop",
+                    "expr1": {
+                      "exprType": "Bop",
+                      "expr1": {
+                        "exprType": "Invoke",
+                        "className": {
+                          "exprType": "Var",
+                          "identifier": "self"
+                        },
+                        "functionName": "getS",
+                        "arguments": [
+                          {
+                            "exprType": "ConstI",
+                            "value": 3
+                          }
+                        ]
+                      },
+                      "op": "Plus",
+                      "expr2": {
+                        "exprType": "ConstS",
+                        "value": "\"|\""
+                      }
+                    },
+                    "op": "Plus",
+                    "expr2": {
+                      "exprType": "Invoke",
+                      "className": {
+                        "exprType": "Var",
+                        "identifier": "self"
+                      },
+                      "functionName": "getS",
+                      "arguments": [
+                        {
+                          "exprType": "ConstI",
+                          "value": 4
+                        }
+                      ]
+                    }
+                  },
+                  "op": "Plus",
+                  "expr2": {
+                    "exprType": "ConstS",
+                    "value": "\"|\""
+                  }
+                },
+                "op": "Plus",
+                "expr2": {
+                  "exprType": "Invoke",
+                  "className": {
+                    "exprType": "Var",
+                    "identifier": "self"
+                  },
+                  "functionName": "getS",
+                  "arguments": [
+                    {
+                      "exprType": "ConstI",
+                      "value": 5
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "statementType": "Print",
+              "printValue": {
+                "exprType": "ConstS",
+                "value": "\"-+-+-\""
+              }
+            },
+            {
+              "statementType": "Print",
+              "printValue": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "Bop",
+                    "expr1": {
+                      "exprType": "Bop",
+                      "expr1": {
+                        "exprType": "Invoke",
+                        "className": {
+                          "exprType": "Var",
+                          "identifier": "self"
+                        },
+                        "functionName": "getS",
+                        "arguments": [
+                          {
+                            "exprType": "ConstI",
+                            "value": 6
+                          }
+                        ]
+                      },
+                      "op": "Plus",
+                      "expr2": {
+                        "exprType": "ConstS",
+                        "value": "\"|\""
+                      }
+                    },
+                    "op": "Plus",
+                    "expr2": {
+                      "exprType": "Invoke",
+                      "className": {
+                        "exprType": "Var",
+                        "identifier": "self"
+                      },
+                      "functionName": "getS",
+                      "arguments": [
+                        {
+                          "exprType": "ConstI",
+                          "value": 7
+                        }
+                      ]
+                    }
+                  },
+                  "op": "Plus",
+                  "expr2": {
+                    "exprType": "ConstS",
+                    "value": "\"|\""
+                  }
+                },
+                "op": "Plus",
+                "expr2": {
+                  "exprType": "Invoke",
+                  "className": {
+                    "exprType": "Var",
+                    "identifier": "self"
+                  },
+                  "functionName": "getS",
+                  "arguments": [
+                    {
+                      "exprType": "ConstI",
+                      "value": 8
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Virtual",
+        "name": "winningWithSide",
+        "parameters": [
+          {
+            "identifier": "side",
+            "type": {
+              "type": "Int"
+            }
+          }
+        ],
+        "returnType": {
+          "type": "Bool"
+        },
+        "body": {
+          "statementType": "Block",
+          "block": [
+            {
+              "statementType": "VarDecl",
+              "leftSide": "row",
+              "type": {
+                "type": "Int"
+              },
+              "rightSide": {
+                "exprType": "ConstI",
+                "value": 0
+              }
+            },
+            {
+              "statementType": "While",
+              "condition": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Var",
+                  "identifier": "row"
+                },
+                "op": "Le",
+                "expr2": {
+                  "exprType": "ConstI",
+                  "value": 2
+                }
+              },
+              "body": {
+                "statementType": "Block",
+                "block": [
+                  {
+                    "statementType": "If",
+                    "condition": {
+                      "exprType": "Bop",
+                      "expr1": {
+                        "exprType": "Bop",
+                        "expr1": {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "Invoke",
+                            "className": {
+                              "exprType": "Var",
+                              "identifier": "self"
+                            },
+                            "functionName": "get",
+                            "arguments": [
+                              {
+                                "exprType": "Bop",
+                                "expr1": {
+                                  "exprType": "Bop",
+                                  "expr1": {
+                                    "exprType": "Var",
+                                    "identifier": "row"
+                                  },
+                                  "op": "Times",
+                                  "expr2": {
+                                    "exprType": "ConstI",
+                                    "value": 3
+                                  }
+                                },
+                                "op": "Plus",
+                                "expr2": {
+                                  "exprType": "ConstI",
+                                  "value": 0
+                                }
+                              }
+                            ]
+                          },
+                          "op": "Eq",
+                          "expr2": {
+                            "exprType": "Var",
+                            "identifier": "side"
+                          }
+                        },
+                        "op": "And",
+                        "expr2": {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "Invoke",
+                            "className": {
+                              "exprType": "Var",
+                              "identifier": "self"
+                            },
+                            "functionName": "get",
+                            "arguments": [
+                              {
+                                "exprType": "Bop",
+                                "expr1": {
+                                  "exprType": "Bop",
+                                  "expr1": {
+                                    "exprType": "Var",
+                                    "identifier": "row"
+                                  },
+                                  "op": "Times",
+                                  "expr2": {
+                                    "exprType": "ConstI",
+                                    "value": 3
+                                  }
+                                },
+                                "op": "Plus",
+                                "expr2": {
+                                  "exprType": "ConstI",
+                                  "value": 1
+                                }
+                              }
+                            ]
+                          },
+                          "op": "Eq",
+                          "expr2": {
+                            "exprType": "Var",
+                            "identifier": "side"
+                          }
+                        }
+                      },
+                      "op": "And",
+                      "expr2": {
+                        "exprType": "Bop",
+                        "expr1": {
+                          "exprType": "Invoke",
+                          "className": {
+                            "exprType": "Var",
+                            "identifier": "self"
+                          },
+                          "functionName": "get",
+                          "arguments": [
+                            {
+                              "exprType": "Bop",
+                              "expr1": {
+                                "exprType": "Bop",
+                                "expr1": {
+                                  "exprType": "Var",
+                                  "identifier": "row"
+                                },
+                                "op": "Times",
+                                "expr2": {
+                                  "exprType": "ConstI",
+                                  "value": 3
+                                }
+                              },
+                              "op": "Plus",
+                              "expr2": {
+                                "exprType": "ConstI",
+                                "value": 2
+                              }
+                            }
+                          ]
+                        },
+                        "op": "Eq",
+                        "expr2": {
+                          "exprType": "Var",
+                          "identifier": "side"
+                        }
+                      }
+                    },
+                    "ifCase": {
+                      "statementType": "Block",
+                      "block": [
+                        {
+                          "statementType": "Return",
+                          "returnValue": {
+                            "exprType": "ConstB",
+                            "value": true
+                          }
+                        }
+                      ]
+                    },
+                    "elseCase": {
+                      "statementType": "Block",
+                      "block": []
+                    }
+                  },
+                  {
+                    "statementType": "Assign",
+                    "leftSide": {
+                      "exprType": "Var",
+                      "identifier": "row"
+                    },
+                    "rightSide": {
+                      "exprType": "Bop",
+                      "expr1": {
+                        "exprType": "Var",
+                        "identifier": "row"
+                      },
+                      "op": "Plus",
+                      "expr2": {
+                        "exprType": "ConstI",
+                        "value": 1
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "statementType": "VarDecl",
+              "leftSide": "col",
+              "type": {
+                "type": "Int"
+              },
+              "rightSide": {
+                "exprType": "ConstI",
+                "value": 0
+              }
+            },
+            {
+              "statementType": "While",
+              "condition": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Var",
+                  "identifier": "col"
+                },
+                "op": "Le",
+                "expr2": {
+                  "exprType": "ConstI",
+                  "value": 2
+                }
+              },
+              "body": {
+                "statementType": "Block",
+                "block": [
+                  {
+                    "statementType": "If",
+                    "condition": {
+                      "exprType": "Bop",
+                      "expr1": {
+                        "exprType": "Bop",
+                        "expr1": {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "Invoke",
+                            "className": {
+                              "exprType": "Var",
+                              "identifier": "self"
+                            },
+                            "functionName": "get",
+                            "arguments": [
+                              {
+                                "exprType": "Bop",
+                                "expr1": {
+                                  "exprType": "Bop",
+                                  "expr1": {
+                                    "exprType": "ConstI",
+                                    "value": 0
+                                  },
+                                  "op": "Times",
+                                  "expr2": {
+                                    "exprType": "ConstI",
+                                    "value": 3
+                                  }
+                                },
+                                "op": "Plus",
+                                "expr2": {
+                                  "exprType": "Var",
+                                  "identifier": "col"
+                                }
+                              }
+                            ]
+                          },
+                          "op": "Eq",
+                          "expr2": {
+                            "exprType": "Var",
+                            "identifier": "side"
+                          }
+                        },
+                        "op": "And",
+                        "expr2": {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "Invoke",
+                            "className": {
+                              "exprType": "Var",
+                              "identifier": "self"
+                            },
+                            "functionName": "get",
+                            "arguments": [
+                              {
+                                "exprType": "Bop",
+                                "expr1": {
+                                  "exprType": "Bop",
+                                  "expr1": {
+                                    "exprType": "ConstI",
+                                    "value": 1
+                                  },
+                                  "op": "Times",
+                                  "expr2": {
+                                    "exprType": "ConstI",
+                                    "value": 3
+                                  }
+                                },
+                                "op": "Plus",
+                                "expr2": {
+                                  "exprType": "Var",
+                                  "identifier": "col"
+                                }
+                              }
+                            ]
+                          },
+                          "op": "Eq",
+                          "expr2": {
+                            "exprType": "Var",
+                            "identifier": "side"
+                          }
+                        }
+                      },
+                      "op": "And",
+                      "expr2": {
+                        "exprType": "Bop",
+                        "expr1": {
+                          "exprType": "Invoke",
+                          "className": {
+                            "exprType": "Var",
+                            "identifier": "self"
+                          },
+                          "functionName": "get",
+                          "arguments": [
+                            {
+                              "exprType": "Bop",
+                              "expr1": {
+                                "exprType": "Bop",
+                                "expr1": {
+                                  "exprType": "ConstI",
+                                  "value": 2
+                                },
+                                "op": "Times",
+                                "expr2": {
+                                  "exprType": "ConstI",
+                                  "value": 3
+                                }
+                              },
+                              "op": "Plus",
+                              "expr2": {
+                                "exprType": "Var",
+                                "identifier": "col"
+                              }
+                            }
+                          ]
+                        },
+                        "op": "Eq",
+                        "expr2": {
+                          "exprType": "Var",
+                          "identifier": "side"
+                        }
+                      }
+                    },
+                    "ifCase": {
+                      "statementType": "Block",
+                      "block": [
+                        {
+                          "statementType": "Return",
+                          "returnValue": {
+                            "exprType": "ConstB",
+                            "value": true
+                          }
+                        }
+                      ]
+                    },
+                    "elseCase": {
+                      "statementType": "Block",
+                      "block": []
+                    }
+                  },
+                  {
+                    "statementType": "Assign",
+                    "leftSide": {
+                      "exprType": "Var",
+                      "identifier": "col"
+                    },
+                    "rightSide": {
+                      "exprType": "Bop",
+                      "expr1": {
+                        "exprType": "Var",
+                        "identifier": "col"
+                      },
+                      "op": "Plus",
+                      "expr2": {
+                        "exprType": "ConstI",
+                        "value": 1
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "statementType": "If",
+              "condition": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "Bop",
+                    "expr1": {
+                      "exprType": "Invoke",
+                      "className": {
+                        "exprType": "Var",
+                        "identifier": "self"
+                      },
+                      "functionName": "get",
+                      "arguments": [
+                        {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "Bop",
+                            "expr1": {
+                              "exprType": "ConstI",
+                              "value": 0
+                            },
+                            "op": "Times",
+                            "expr2": {
+                              "exprType": "ConstI",
+                              "value": 3
+                            }
+                          },
+                          "op": "Plus",
+                          "expr2": {
+                            "exprType": "ConstI",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    },
+                    "op": "Eq",
+                    "expr2": {
+                      "exprType": "Var",
+                      "identifier": "side"
+                    }
+                  },
+                  "op": "And",
+                  "expr2": {
+                    "exprType": "Bop",
+                    "expr1": {
+                      "exprType": "Invoke",
+                      "className": {
+                        "exprType": "Var",
+                        "identifier": "self"
+                      },
+                      "functionName": "get",
+                      "arguments": [
+                        {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "Bop",
+                            "expr1": {
+                              "exprType": "ConstI",
+                              "value": 1
+                            },
+                            "op": "Times",
+                            "expr2": {
+                              "exprType": "ConstI",
+                              "value": 3
+                            }
+                          },
+                          "op": "Plus",
+                          "expr2": {
+                            "exprType": "ConstI",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    "op": "Eq",
+                    "expr2": {
+                      "exprType": "Var",
+                      "identifier": "side"
+                    }
+                  }
+                },
+                "op": "And",
+                "expr2": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "Invoke",
+                    "className": {
+                      "exprType": "Var",
+                      "identifier": "self"
+                    },
+                    "functionName": "get",
+                    "arguments": [
+                      {
+                        "exprType": "Bop",
+                        "expr1": {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "ConstI",
+                            "value": 2
+                          },
+                          "op": "Times",
+                          "expr2": {
+                            "exprType": "ConstI",
+                            "value": 3
+                          }
+                        },
+                        "op": "Plus",
+                        "expr2": {
+                          "exprType": "ConstI",
+                          "value": 2
+                        }
+                      }
+                    ]
+                  },
+                  "op": "Eq",
+                  "expr2": {
+                    "exprType": "Var",
+                    "identifier": "side"
+                  }
+                }
+              },
+              "ifCase": {
+                "statementType": "Block",
+                "block": [
+                  {
+                    "statementType": "Return",
+                    "returnValue": {
+                      "exprType": "ConstB",
+                      "value": true
+                    }
+                  }
+                ]
+              },
+              "elseCase": {
+                "statementType": "Block",
+                "block": []
+              }
+            },
+            {
+              "statementType": "If",
+              "condition": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "Bop",
+                    "expr1": {
+                      "exprType": "Invoke",
+                      "className": {
+                        "exprType": "Var",
+                        "identifier": "self"
+                      },
+                      "functionName": "get",
+                      "arguments": [
+                        {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "Bop",
+                            "expr1": {
+                              "exprType": "ConstI",
+                              "value": 2
+                            },
+                            "op": "Times",
+                            "expr2": {
+                              "exprType": "ConstI",
+                              "value": 3
+                            }
+                          },
+                          "op": "Plus",
+                          "expr2": {
+                            "exprType": "ConstI",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    },
+                    "op": "Eq",
+                    "expr2": {
+                      "exprType": "Var",
+                      "identifier": "side"
+                    }
+                  },
+                  "op": "And",
+                  "expr2": {
+                    "exprType": "Bop",
+                    "expr1": {
+                      "exprType": "Invoke",
+                      "className": {
+                        "exprType": "Var",
+                        "identifier": "self"
+                      },
+                      "functionName": "get",
+                      "arguments": [
+                        {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "Bop",
+                            "expr1": {
+                              "exprType": "ConstI",
+                              "value": 1
+                            },
+                            "op": "Times",
+                            "expr2": {
+                              "exprType": "ConstI",
+                              "value": 3
+                            }
+                          },
+                          "op": "Plus",
+                          "expr2": {
+                            "exprType": "ConstI",
+                            "value": 1
+                          }
+                        }
+                      ]
+                    },
+                    "op": "Eq",
+                    "expr2": {
+                      "exprType": "Var",
+                      "identifier": "side"
+                    }
+                  }
+                },
+                "op": "And",
+                "expr2": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "Invoke",
+                    "className": {
+                      "exprType": "Var",
+                      "identifier": "self"
+                    },
+                    "functionName": "get",
+                    "arguments": [
+                      {
+                        "exprType": "Bop",
+                        "expr1": {
+                          "exprType": "Bop",
+                          "expr1": {
+                            "exprType": "ConstI",
+                            "value": 0
+                          },
+                          "op": "Times",
+                          "expr2": {
+                            "exprType": "ConstI",
+                            "value": 3
+                          }
+                        },
+                        "op": "Plus",
+                        "expr2": {
+                          "exprType": "ConstI",
+                          "value": 2
+                        }
+                      }
+                    ]
+                  },
+                  "op": "Eq",
+                  "expr2": {
+                    "exprType": "Var",
+                    "identifier": "side"
+                  }
+                }
+              },
+              "ifCase": {
+                "statementType": "Block",
+                "block": [
+                  {
+                    "statementType": "Return",
+                    "returnValue": {
+                      "exprType": "ConstB",
+                      "value": true
+                    }
+                  }
+                ]
+              },
+              "elseCase": {
+                "statementType": "Block",
+                "block": []
+              }
+            },
+            {
+              "statementType": "Return",
+              "returnValue": {
+                "exprType": "ConstB",
+                "value": true
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "declType": "Func",
+    "functionName": "cs132start",
+    "parameters": [],
+    "returnType": {
+      "type": "Void"
+    },
+    "body": {
+      "statementType": "Block",
+      "block": [
+        {
+          "statementType": "Print",
+          "printValue": {
+            "exprType": "Bop",
+            "expr1": {
+              "exprType": "Bop",
+              "expr1": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "ConstS",
+                    "value": "\"0\""
+                  },
+                  "op": "Plus",
+                  "expr2": {
+                    "exprType": "ConstS",
+                    "value": "\"|\""
+                  }
+                },
+                "op": "Plus",
+                "expr2": {
+                  "exprType": "ConstS",
+                  "value": "\"1\""
+                }
+              },
+              "op": "Plus",
+              "expr2": {
+                "exprType": "ConstS",
+                "value": "\"|\""
+              }
+            },
+            "op": "Plus",
+            "expr2": {
+              "exprType": "ConstS",
+              "value": "\"2\""
+            }
+          }
+        },
+        {
+          "statementType": "Print",
+          "printValue": {
+            "exprType": "ConstS",
+            "value": "\"-+-+-\""
+          }
+        },
+        {
+          "statementType": "Print",
+          "printValue": {
+            "exprType": "Bop",
+            "expr1": {
+              "exprType": "Bop",
+              "expr1": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "ConstS",
+                    "value": "\"3\""
+                  },
+                  "op": "Plus",
+                  "expr2": {
+                    "exprType": "ConstS",
+                    "value": "\"|\""
+                  }
+                },
+                "op": "Plus",
+                "expr2": {
+                  "exprType": "ConstS",
+                  "value": "\"4\""
+                }
+              },
+              "op": "Plus",
+              "expr2": {
+                "exprType": "ConstS",
+                "value": "\"|\""
+              }
+            },
+            "op": "Plus",
+            "expr2": {
+              "exprType": "ConstS",
+              "value": "\"5\""
+            }
+          }
+        },
+        {
+          "statementType": "Print",
+          "printValue": {
+            "exprType": "ConstS",
+            "value": "\"-+-+-\""
+          }
+        },
+        {
+          "statementType": "Print",
+          "printValue": {
+            "exprType": "Bop",
+            "expr1": {
+              "exprType": "Bop",
+              "expr1": {
+                "exprType": "Bop",
+                "expr1": {
+                  "exprType": "Bop",
+                  "expr1": {
+                    "exprType": "ConstS",
+                    "value": "\"6\""
+                  },
+                  "op": "Plus",
+                  "expr2": {
+                    "exprType": "ConstS",
+                    "value": "\"|\""
+                  }
+                },
+                "op": "Plus",
+                "expr2": {
+                  "exprType": "ConstS",
+                  "value": "\"7\""
+                }
+              },
+              "op": "Plus",
+              "expr2": {
+                "exprType": "ConstS",
+                "value": "\"|\""
+              }
+            },
+            "op": "Plus",
+            "expr2": {
+              "exprType": "ConstS",
+              "value": "\"8\""
+            }
+          }
+        },
+        {
+          "statementType": "VarDecl",
+          "leftSide": "b",
+          "type": {
+            "type": "Class",
+            "className": "Board"
+          },
+          "rightSide": {
+            "exprType": "New",
+            "className": "Board",
+            "arguments": []
+          }
+        },
+        {
+          "statementType": "VarDecl",
+          "leftSide": "s",
+          "type": {
+            "type": "String"
+          },
+          "rightSide": {
+            "exprType": "ConstS",
+            "value": "\"\""
+          }
+        },
+        {
+          "statementType": "While",
+          "condition": {
+            "exprType": "ConstB",
+            "value": true
+          },
+          "body": {
+            "statementType": "Block",
+            "block": [
+              {
+                "statementType": "Print",
+                "printValue": {
+                  "exprType": "ConstS",
+                  "value": "\"x's turn (input 0-8)\""
+                }
+              },
+              {
+                "statementType": "Assign",
+                "leftSide": {
+                  "exprType": "Var",
+                  "identifier": "s"
+                },
+                "rightSide": {
+                  "exprType": "Call",
+                  "functionName": "readLine",
+                  "arguments": []
+                }
+              },
+              {
+                "statementType": "Expr",
+                "expr": {
+                  "exprType": "Invoke",
+                  "className": {
+                    "exprType": "Var",
+                    "identifier": "b"
+                  },
+                  "functionName": "set",
+                  "arguments": [
+                    {
+                      "exprType": "Coalesce",
+                      "expr1": {
+                        "exprType": "Convert",
+                        "targetType": {
+                          "type": "Optional",
+                          "optionalType": {
+                            "type": "Int"
+                          }
+                        },
+                        "expr": {
+                          "exprType": "Var",
+                          "identifier": "s"
+                        }
+                      },
+                      "expr2": {
+                        "exprType": "ConstI",
+                        "value": 0
+                      }
+                    },
+                    {
+                      "exprType": "ConstI",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "statementType": "Expr",
+                "expr": {
+                  "exprType": "Invoke",
+                  "className": {
+                    "exprType": "Var",
+                    "identifier": "b"
+                  },
+                  "functionName": "printBoard",
+                  "arguments": []
+                }
+              },
+              {
+                "statementType": "If",
+                "condition": {
+                  "exprType": "Invoke",
+                  "className": {
+                    "exprType": "Var",
+                    "identifier": "b"
+                  },
+                  "functionName": "winningWithSide",
+                  "arguments": [
+                    {
+                      "exprType": "ConstI",
+                      "value": 1
+                    }
+                  ]
+                },
+                "ifCase": {
+                  "statementType": "Block",
+                  "block": [
+                    {
+                      "statementType": "Print",
+                      "printValue": {
+                        "exprType": "ConstS",
+                        "value": "\"x wins!\""
+                      }
+                    },
+                    {
+                      "statementType": "Return"
+                    }
+                  ]
+                },
+                "elseCase": {
+                  "statementType": "Block",
+                  "block": []
+                }
+              },
+              {
+                "statementType": "Print",
+                "printValue": {
+                  "exprType": "ConstS",
+                  "value": "\"o's turn (input 0-8)\""
+                }
+              },
+              {
+                "statementType": "Assign",
+                "leftSide": {
+                  "exprType": "Var",
+                  "identifier": "s"
+                },
+                "rightSide": {
+                  "exprType": "Call",
+                  "functionName": "readLine",
+                  "arguments": []
+                }
+              },
+              {
+                "statementType": "Expr",
+                "expr": {
+                  "exprType": "Invoke",
+                  "className": {
+                    "exprType": "Var",
+                    "identifier": "b"
+                  },
+                  "functionName": "set",
+                  "arguments": [
+                    {
+                      "exprType": "Coalesce",
+                      "expr1": {
+                        "exprType": "Convert",
+                        "targetType": {
+                          "type": "Optional",
+                          "optionalType": {
+                            "type": "Int"
+                          }
+                        },
+                        "expr": {
+                          "exprType": "Var",
+                          "identifier": "s"
+                        }
+                      },
+                      "expr2": {
+                        "exprType": "ConstI",
+                        "value": 0
+                      }
+                    },
+                    {
+                      "exprType": "ConstI",
+                      "value": 2
+                    }
+                  ]
+                }
+              },
+              {
+                "statementType": "Expr",
+                "expr": {
+                  "exprType": "Invoke",
+                  "className": {
+                    "exprType": "Var",
+                    "identifier": "b"
+                  },
+                  "functionName": "printBoard",
+                  "arguments": []
+                }
+              },
+              {
+                "statementType": "If",
+                "condition": {
+                  "exprType": "Invoke",
+                  "className": {
+                    "exprType": "Var",
+                    "identifier": "b"
+                  },
+                  "functionName": "winningWithSide",
+                  "arguments": [
+                    {
+                      "exprType": "ConstI",
+                      "value": 2
+                    }
+                  ]
+                },
+                "ifCase": {
+                  "statementType": "Block",
+                  "block": [
+                    {
+                      "statementType": "Print",
+                      "printValue": {
+                        "exprType": "ConstS",
+                        "value": "\"o wins!\""
+                      }
+                    },
+                    {
+                      "statementType": "Return"
+                    }
+                  ]
+                },
+                "elseCase": {
+                  "statementType": "Block",
+                  "block": []
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]
