@@ -9,6 +9,10 @@ function unIndent(tab,input) {
   return input.substring(0,input.length-tab.length);
 }
 
+function undoNewLine(tab,indentLevel,lexedOutput){
+  return unIndent(repeat(tab,indentLevel)+"\n",lexedOutput)+repeat(tab,indentLevel);
+}
+
 function format(lexer, indentChars) {
   var i           = 0,
       il          = 0,
@@ -18,7 +22,7 @@ function format(lexer, indentChars) {
       inString    = false,
       currToken = null;
       prevToken = null;
-      lastLineIsNewLine = false;
+      numNewLineBefore = 0;
   currToken = lexer.lex();
   while ( currToken != 1) { 
       
@@ -27,15 +31,10 @@ function format(lexer, indentChars) {
       
       switch (type) {
       case 'NEWLINE':
-          var array = ['COMMENT'];
-          if(array.includes(prevToken.type) && !lastLineIsNewLine){
-              lexedOutput = unIndent(repeat(tab,indentLevel),lexedOutput);
-              lexedOutput += '\n'+repeat(tab,indentLevel);
-          }
           break;
       case '{':  
           if (!inString) { 
-              lexedOutput += ' ' +content + "\n"+repeat(tab, indentLevel+1);
+              lexedOutput += ' ' +content + "\n"+repeat(tab, indentLevel+1); // end of line character
               indentLevel += 1; 
           } else { 
               lexedOutput += content; 
@@ -43,34 +42,44 @@ function format(lexer, indentChars) {
           break; 
       case '}': 
           if (!inString) { 
+              // remove the new line if we have a series of }
+              if(prevToken.type == '}'){
+                lexedOutput = undoNewLine(tab,indentLevel,lexedOutput);
+              }
               indentLevel -= 1;
               lexedOutput = unIndent(tab,lexedOutput);
-              if(prevToken.type=='}'){
-                  lexedOutput = unIndent("\n",lexedOutput);
-              }
+              
               lexedOutput += content+"\n\n"+ repeat(tab, indentLevel) ; 
+              // end of line character plus new line
           } else { 
               lexedOutput += content; 
           } 
           break;
+      case ";":
+            if(prevToken.type == 'return'){
+              lexedOutput = unIndent(" ",lexedOutput);
+            }
+            lexedOutput += content + "\n"+repeat(tab, indentLevel);// end of line character
+            break;
       case 'COMMENT':
+        var commentCase = numNewLineBefore>=1 && prevToken.type=='COMMENT';
+        var notCommentCase = numNewLineBefore>=2 && !['}'].includes(prevToken.type);
+        if(commentCase||notCommentCase){
+            lexedOutput = unIndent(repeat(tab,indentLevel),lexedOutput);
+            lexedOutput += '\n'+repeat(tab,indentLevel);
+        }
         lexedOutput += content + repeat(tab, indentLevel);
         break;  
       case "else":  
           if(prevToken.type == '}'){
-            lexedOutput = unIndent(repeat(tab,indentLevel)+"\n",lexedOutput)+repeat(tab,indentLevel);
+            lexedOutput = undoNewLine(tab,indentLevel,lexedOutput);
           }
           lexedOutput += content;
           break;
-      case ";":
-          if(prevToken.type == 'return'){
-            lexedOutput = unIndent(" ",lexedOutput);
-          }
-          lexedOutput += content + "\n"+repeat(tab, indentLevel);
-          break;
+      
+      // space after
       case "func":
       case "if":
-      
       case "case":
       case "static":
       case "super":
@@ -85,6 +94,7 @@ function format(lexer, indentChars) {
             lexedOutput += content+" ";
         }
         break; 
+      // space between and after
       case "=":
       case "+":
       case "-":
@@ -103,12 +113,14 @@ function format(lexer, indentChars) {
               lexedOutput += " "+content+" ";
           }
           break; 
+      // only keep if escaped 
       case "\n":
       case "\t":
           if (inString) {
               lexedOutput += content;
           }
           break;
+      // read string
       case '"': 
           if (i > 0 && prevToken.type !== '\\') {
               inString = !inString; 
@@ -121,9 +133,9 @@ function format(lexer, indentChars) {
       } 
       if(currToken.type!=='NEWLINE'){
          prevToken = currToken;
-         lastLineIsNewLine = false;
+         numNewLineBefore = 0;
       } else{
-         lastLineIsNewLine = true;
+        numNewLineBefore += 1;
       }
       currToken = lexer.lex();
       

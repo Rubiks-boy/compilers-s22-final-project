@@ -2,7 +2,7 @@
 %%
 
 [\ \t]+                   /* skip whitespace */
-[\n]+				return {type:  'NEWLINE', 'content':yytext}
+\n				return {type:  'NEWLINE', 'content':yytext}
 "//".*\n				return {type:  'COMMENT', 'content':yytext}
 
 "=="				return {type: '==', 'content':yytext}

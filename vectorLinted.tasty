@@ -1,0 +1,172 @@
+// Come up with an "interesting" example of hasty doing some
+//   nontrivial computation or using some nontrivial data structure.
+
+// What does the program do?
+// This program consists of two data structures: 
+//  1) a linked list
+//  2) a (inefficient implementation) of vector 
+//  
+// LinkedList: this is a simple data structure that contains 
+//            a val and the next LinkedList
+//          For implementation simplicity, we did not use nil for null
+//
+// Vector: this vector is built upon LinkedList.
+//         It supports 
+//         1) appending an element to the vector 
+//         2) getting an element by index (inefficiently)
+//         3) adding two vectors component wise
+//         4) multiplying two vectors component wise
+//         5) summing elements in a vector
+//         6) a dot product between two vectors
+//         7) printing a vector (with comments)
+classLinkedList {
+    var val: Int;
+    var next: LinkedList;
+    init(val: Int) {
+        self.val = val;
+    }
+}
+
+classVector {
+    var firstVal: LinkedList;
+    var lastVal: LinkedList;
+    var currLength: Int;
+    init() {
+        self.currLength = 0;
+        self.lastVal = LinkedList(0);
+        self.firstVal = self.lastVal;
+    }
+
+    // appending an element with value **val** to the vector 
+    func append(val: Int)-> Void {
+        self.currLength = self.currLength + 1;
+        var newLastVal: LinkedList = LinkedList(val);
+        self.lastVal.next = newLastVal;
+        self.lastVal = newLastVal;
+    }
+
+    // getting an element by index (inefficiently)
+    // An error will result in a print warning and a -1 value
+    func get(idx: Int)-> Int {
+        if (idx < 0 || idx >= self.currLength) {
+            print("Error: Invalid Index! Returning -1");
+            return  - 1;
+        }
+
+        var currIdx: Int = 0;
+        var currVal: LinkedList = self.firstVal.next;
+        while (currIdx!=idx) {
+            currVal = currVal.next;
+            currIdx = currIdx + 1;
+        }
+
+        return currVal.val;
+    }
+
+    // print the content of a vector 
+    // starting with input string ** name **
+    func printVector(name: String)-> Void {
+        var currVal: LinkedList = self.firstVal.next;
+        var pos: Int = 0;
+        var s: String = name + ": ";
+        while (pos < self.currLength) {
+            s = s + castString(currVal.val) + ",";
+            currVal = currVal.next;
+            pos = pos + 1;
+        }
+
+        print(s);
+        return;
+    }
+
+    // adding two vectors component wise
+    // If the two vectors have different lengths, 
+    // we print a warning and return an uninitialized vector. 
+    func add(vec2: Vector)-> Vector {
+        var newVec: Vector = Vector();
+        if (self.currLength!=vec2.currLength) {
+            print("Error: Length differs! Returning uninitialized vector");
+            return newVec;
+        }
+
+        var currVal1: LinkedList = self.firstVal.next;
+        var currVal2: LinkedList = vec2.firstVal.next;
+        var pos: Int = 0;
+        while (pos < self.currLength) {
+            newVec.append(currVal1.val + currVal2.val);
+            currVal1 = currVal1.next;
+            currVal2 = currVal2.next;
+            pos = pos + 1;
+        }
+
+        return newVec;
+    }
+
+    // multiplying two vectors component wise
+    // If the two vectors have different lengths, 
+    // we print a warning and return an uninitialized vector. 
+    func mult(vec2: Vector)-> Vector {
+        var newVec: Vector = Vector();
+        if (self.currLength!=vec2.currLength) {
+            print("Error: Length differs! Returning uninitialized vector");
+            return newVec;
+        }
+
+        var currVal1: LinkedList = self.firstVal.next;
+        var currVal2: LinkedList = vec2.firstVal.next;
+        var pos: Int = 0;
+        while (pos < self.currLength) {
+            newVec.append(currVal1.val * currVal2.val);
+            currVal1 = currVal1.next;
+            currVal2 = currVal2.next;
+            pos = pos + 1;
+        }
+
+        return newVec;
+    }
+
+    // summing every element in a vector 
+    func sum()-> Int {
+        var currVal: LinkedList = self.firstVal.next;
+        var pos: Int = 0;
+        var s: Int = 0;
+        while (pos < self.currLength) {
+            s = s + currVal.val;
+            currVal = currVal.next;
+            pos = pos + 1;
+        }
+
+        return s;
+    }
+
+    // computing the dot product between two vectors
+    // If the two vectors have different lengths, 
+    // we print a warning and return an unspecified value. 
+    func dotProd(vec2: Vector)-> Int {
+        var prodVec: Vector = self.mult(vec2);
+        return prodVec.sum();
+    }
+}
+
+func cs132start()-> Void {
+    var vec1: Vector = Vector();
+    vec1.append(3);
+    vec1.append(10);
+    print("Getting first element in vec1:");
+    print(vec1.get(0));
+    vec1.printVector("Vec 1 array");
+    print("Summing elements in vec1:");
+    print(vec1.sum());
+    var vec2: Vector = Vector();
+    vec2.append(4);
+    vec2.append(20);
+    vec2.printVector("Vec 2 array");
+    var vec3: Vector = vec1.add(vec2);
+    vec3.printVector("Adding vec 1 and vec 2");
+    var vec3: Vector = vec1.mult(vec2);
+    vec3.printVector("Multiplying vec 1 and vec 2");
+    print("Dot product between vec1 and vec2");
+    print(vec1.dotProd(vec2));
+    return;
+}
+

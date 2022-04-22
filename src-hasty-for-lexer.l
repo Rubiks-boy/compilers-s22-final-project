@@ -2,7 +2,7 @@
 %%
 
 [\ \t]+                   /* skip whitespace */
-[\n]+                       return 'NEWLINE'
+\n                          return 'NEWLINE'
 "//".*\n                    return 'COMMENT'
 
 "=="                        return 'EQEQ'
