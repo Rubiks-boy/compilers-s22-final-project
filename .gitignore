@@ -4,3 +4,6 @@ out/
 
 # personal draft
 draft
+
+# vscode extension executable
+*.vsix

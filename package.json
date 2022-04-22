@@ -3,12 +3,17 @@
     "displayName": "Hasty",
     "description": "Extension for CS132 Hasty language",
     "version": "0.0.1",
+    "publisher": "SantiSantichaivekinDev",
     "engines": {
         "vscode": "^1.66.0"
     },
     "categories": [
         "Programming Languages"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Rubiks-boy/compilers-s22-final-project.git"
+    },
     "activationEvents": [
         "onCommand:cs132-hasty.helloWorld",
         "onCommand:cs132-hasty.parse",
