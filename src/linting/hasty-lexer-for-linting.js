@@ -330,7 +330,7 @@ case 0:/* skip whitespace */
 break;
 case 1:return {type:  'NEWLINE', 'content':yy_.yytext}
 break;
-case 2:return {type:  'COMMENT', 'content':yy_.yytext}
+case 2:return {type:  'COMMENT', 'content':yy_.yytext, 'lineNum': yy_.yylineno}
 break;
 case 3:return {type: '==', 'content':yy_.yytext}
 break;

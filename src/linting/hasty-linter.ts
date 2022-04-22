@@ -15,7 +15,6 @@ function undoNewLine(tab: string, indentLevel: number, lexedOutput: string) {
 }
 
 export function lint(lexer: any, indentChars: string) {
-
   var tab = (typeof indentChars !== "undefined") ? indentChars : "    ";
   var lexedOutput = "";
   var indentLevel = 0;

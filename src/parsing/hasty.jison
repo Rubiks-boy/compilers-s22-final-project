@@ -97,10 +97,10 @@ Program
     ;
 
 Statement
-    : IF Expression Block                            { $$ = {statementType: 'If', condition: $2, ifCase: $3, elseCase: {statementType: 'Block', block: []}}; }
-    | IF Expression Block ELSE Statement             { $$ = {statementType: 'If', condition: $2, ifCase: $3, elseCase: $5}; }
-    | Block                                          { $$ = {statementType: 'Block', block: $1}; }
-    | WHILE Expression Block                         { $$ = {statementType: 'While', condition: $2, body: $3}; }
+    : IF Expression Block                            { $$ = {statementType: 'If', condition: $2, ifCase: $3, elseCase: {statementType: 'Block', block: []}, startLine: @$.first_line, endLine: @$.last_line, hasElse: 0}; }
+    | IF Expression Block ELSE Statement             { $$ = {statementType: 'If', condition: $2, ifCase: $3, elseCase: $5, startLine: @$.first_line, endLine: @$.last_line, hasElse: 1}; }
+    | Block                                          { $$ = {statementType: 'Block', block: $1, startLine: @$.first_line, endLine: @$.last_line}; }
+    | WHILE Expression Block                         { $$ = {statementType: 'While', condition: $2, body: $3, startLine: @$.first_line, endLine: @$.last_line}; }
     | RETURN SEMI                                    { $$ = {statementType: 'Return'}; }
     | RETURN Expression SEMI                         { $$ = {statementType: 'Return', returnValue: $2}; }
     | PRINT LPAREN Expression RPAREN SEMI            { $$ = {statementType: 'Print', printValue: $3}; }
@@ -115,7 +115,7 @@ Statements
     ;
 
 Block
-    : LBRACE Statements RBRACE    { $$ = {statementType: 'Block', block: $2} }
+    : LBRACE Statements RBRACE    { $$ = {statementType: 'Block', block: $2, startLine: @$.first_line, endLine: @$.last_line} }
     ;
 
 Expression
@@ -185,9 +185,9 @@ Type
 
 Declaration
     : FUNC IDENT LPAREN Parameterz RPAREN ARROW Type Block  
-        { $$ = {declType: 'Func', functionName: $2, parameters: $4, returnType: $7, body: $8}; }
+        { $$ = {declType: 'Func', functionName: $2, parameters: $4, returnType: $7, body: $8, startLine: @$.first_line, endLine: @$.last_line}; }
     | CLASS CLASSNAME Superclass LBRACE Fieldz Constructor Methodz RBRACE 
-        { $$ = {declType: 'Class', className: $2, superClass: $3, fields: $5, constructor: $6, methods: $7}; }
+        { $$ = {declType: 'Class', className: $2, superClass: $3, fields: $5, constructor: $6, methods: $7, startLine: @$.first_line, endLine: @$.last_line}; }
     ;
 
 Declarations
@@ -238,7 +238,7 @@ Fieldz
     ;
 
 Constructor
-    : INIT LPAREN Parameterz RPAREN SuperInit Block    { $$ = {parameters: $3, superInit: $5, body: $6}; }
+    : INIT LPAREN Parameterz RPAREN SuperInit Block    { $$ = {parameters: $3, superInit: $5, body: $6, startLine: @$.first_line, endLine: @$.last_line}; }
     ;
 
 SuperInit
@@ -248,11 +248,11 @@ SuperInit
 
 Method
     : FUNC IDENT LPAREN Parameterz RPAREN ARROW Type Block         
-         { $$ = {type: 'Virtual', name: $2, parameters: $4, returnType: $7, body: $8}; }
+         { $$ = {type: 'Virtual', name: $2, parameters: $4, returnType: $7, body: $8, startLine: @$.first_line, endLine: @$.last_line}; }
     | OVERRIDE FUNC IDENT LPAREN Parameterz RPAREN ARROW Type Block         
-         { $$ = {type: 'Override', name: $3, parameters: $5, returnType: $8, body: $9}; }
+         { $$ = {type: 'Override', name: $3, parameters: $5, returnType: $8, body: $9, startLine: @$.first_line, endLine: @$.last_line}; }
     | STATIC FUNC IDENT LPAREN Parameterz RPAREN ARROW Type Block         
-         { $$ = {type: 'Static', name: $3, parameters: $5, returnType: $8, body: $9}; }
+         { $$ = {type: 'Static', name: $3, parameters: $5, returnType: $8, body: $9, startLine: @$.first_line, endLine: @$.last_line}; }
     ;
 
 Methodz

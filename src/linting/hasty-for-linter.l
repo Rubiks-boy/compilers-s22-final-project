@@ -3,7 +3,7 @@
 
 [\ \t]+                   /* skip whitespace */
 \n				return {type:  'NEWLINE', 'content':yytext}
-"//".*\n				return {type:  'COMMENT', 'content':yytext}
+"//".*\n				return {type:  'COMMENT', 'content':yytext, 'lineNum': yylineno}
 
 "=="				return {type: '==', 'content':yytext}
 "!="				return {type: '!=', 'content':yytext}
