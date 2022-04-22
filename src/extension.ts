@@ -189,10 +189,14 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       if(expected.length === 1 && singleTokenInsertions[expected[0]]) {
-        const action = new vscode.CodeAction('Insert ' + expected, vscode.CodeActionKind.QuickFix);
-        action.edit = new vscode.WorkspaceEdit();
-        action.edit.insert(document.uri, range.end, singleTokenInsertions[expected[0]]);
-        return [action];
+        const suggestion = singleTokenInsertions[expected[0]];
+
+        if(suggestion) {
+          const action = new vscode.CodeAction(`Insert ${suggestion}`, vscode.CodeActionKind.QuickFix);
+          action.edit = new vscode.WorkspaceEdit();
+          action.edit.insert(document.uri, range.end, suggestion);
+          return [action];
+        }
       }
 
       return [];
