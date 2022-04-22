@@ -12,8 +12,8 @@
     "activationEvents": [
         "onCommand:cs132-hasty.helloWorld",
         "onLanguage:hasty"
-	],
-	"main": "./out/extension.js",
+    ],
+    "main": "./out/extension.js",
     "contributes": {
         "languages": [
             {
@@ -35,11 +35,11 @@
             }
         ],
         "commands": [
-			{
-				"command": "cs132-hasty.helloWorld",
-				"title": "Hello World"
-			}
-		]
+            {
+                "command": "cs132-hasty.helloWorld",
+                "title": "Hello World"
+            }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -61,5 +61,8 @@
         "mocha": "^9.2.2",
         "typescript": "^4.5.5",
         "@vscode/test-electron": "^2.1.3"
+    },
+    "dependencies": {
+        "jison-lex": "^0.3.4"
     }
 }

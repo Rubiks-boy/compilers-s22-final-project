@@ -1,6 +1,16 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code belo
 import * as vscode from 'vscode';
+import * as path from 'path';
+
+// imports for linting 
+var lintPath = path.join(__dirname,'../linting/linter');
+var lint = require(lintPath).lint;
+var jisonLex = require('jison-lex');
+var fs = require('fs');
+var grammarPath = path.join(__dirname,'../linting/hasty-for-linter.l');
+var grammar = fs.readFileSync(grammarPath, 'utf8');
+var lexer = new jisonLex(grammar);
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -20,6 +30,17 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+  
+  vscode.languages.registerDocumentFormattingEditProvider('hasty',{
+    provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions){
+      var space = '\t';
+      if(options.insertSpaces){
+        space = ' '.repeat(options.tabSize);
+      } 
+      var output = getLintedText(document,space); 
+      return [output];
+    }
+  });
 
 	vscode.languages.registerHoverProvider('hasty', {
 		provideHover(document, position, token) {
@@ -44,6 +65,17 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		}
 	});
+}
+
+function getLintedText(document: vscode.TextDocument, space: string){
+  var input = document.getText();
+  lexer.setInput(input);
+  var output = lint(lexer,space);
+  var startPos = new vscode.Position(0,0);
+  var endPos = document.lineAt(document.lineCount-1).range.end;
+  var range = new vscode.Range(startPos, endPos);
+  var edit = new vscode.TextEdit(range, output);
+  return edit;
 }
 
 function findDefinition(

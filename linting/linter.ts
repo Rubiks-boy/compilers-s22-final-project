@@ -1,30 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lint = void 0;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.lint = void 0;
-function repeat(s, count) {
-    if (count <= 0) {
+function repeat(s: string, count: number) {
+    if (count <= 0){
         return '';
     }
     return new Array(count + 1).join(s);
 }
-function unIndent(tab, input) {
+function unIndent(tab: string, input: string) {
     return input.substring(0, input.length - tab.length);
 }
-function undoNewLine(tab, indentLevel, lexedOutput) {
+function undoNewLine(tab: string, indentLevel: number, lexedOutput: string) {
     return unIndent(repeat(tab, indentLevel) + "\n", lexedOutput) + repeat(tab, indentLevel);
 }
-function lint(lexer, indentChars) {
-    var i = 0;
-    var il = 0;
+
+export function lint(lexer: any, indentChars: string) {
+    var i = 0; 
+    var il = 0; 
     var tab = (typeof indentChars !== "undefined") ? indentChars : "    ";
-    var lexedOutput = "";
-    var indentLevel = 0;
-    var inString = false;
+    var lexedOutput = ""; 
+    var indentLevel = 0; 
+    var inString = false; 
     var currToken = null;
     var prevToken = null;
     var numNewLineBefore = 0;
+    
     currToken = lexer.lex();
     while (currToken !== 1) {
         var type = currToken.type;
@@ -142,5 +142,6 @@ function lint(lexer, indentChars) {
     }
     return lexedOutput;
 }
-exports.lint = lint;
+
+
 //# sourceMappingURL=linter.js.map
