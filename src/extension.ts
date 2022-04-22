@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code belo
 import * as vscode from 'vscode';
@@ -13,12 +14,35 @@ var grammar = fs.readFileSync(grammarPath, 'utf8');
 var lexer = new jisonLex(grammar);
 
 // imports for parsing
-const parser = require('../parsing/hasty');
+import * as parser from 'hasty-parser';
 
 // diagnostics about the current documents (e.g. parse errors)
 let diagnosticCollection: vscode.DiagnosticCollection;
 
-const getParseError = (document: vscode.TextDocument) => {
+// whenever the parser says that only one token is expected,
+// we'll offer to autofill that token.
+const singleTokenInsertions : any = {
+  "'EQ'": ' = ',
+  "'QUERYQUERY'": ' ?? ',
+  "'ARROW'": ' -> ',
+  "'SEMI'": ';',
+  "'LPAREN'": '(',
+  "'RPAREN'": ')',
+  "'LBRACKET'": '[',
+  "'RBRACKET'": ']',
+  "'LBRACE'": '{',
+  "'RBRACE'": '}',
+  "'QUERY'": ' ? ',
+  "'COMMA'": ', ',
+  "'COLON'": ' : ',
+  "'DOT'": '.',
+  "'ELSE'": ' else ',
+  "'IF'": ' if ',
+  "'NIL'": ' nil ',
+  "'INIT'": ' init ',
+};
+
+const getParseError = (document: vscode.TextDocument): {diagnostic: vscode.Diagnostic, range: vscode.Range, hash: any} | null => {
     const text = document.getText();
     try {
       parser.parse(text);
@@ -31,7 +55,7 @@ const getParseError = (document: vscode.TextDocument) => {
       const range = new vscode.Range(startPos, endPos);
       const message = `Parse error on line ${line} at '${text}': expected ${expected}`;
       const diagnostic = new vscode.Diagnostic(range, message, vscode.DiagnosticSeverity.Error);
-      return diagnostic;
+      return {diagnostic, range, hash: e.hash};
     }
     return null;
 };
@@ -39,9 +63,10 @@ const getParseError = (document: vscode.TextDocument) => {
 const validateDocument = (document: vscode.TextDocument) => {
   diagnosticCollection.clear();
 
-  const error = getParseError(document);
-  if (error) {
-    diagnosticCollection.set(document.uri, [error]);
+  const parseError = getParseError(document);
+  if (parseError) {
+    const {diagnostic} = parseError;
+    diagnosticCollection.set(document.uri, [diagnostic]);
   }
 };
 
@@ -131,6 +156,52 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.workspace.onDidOpenTextDocument(validateDocument, null, context.subscriptions);
   vscode.workspace.onDidChangeTextDocument(onChange, null, context.subscriptions);
   vscode.workspace.onDidCloseTextDocument(validateDocument, null, context.subscriptions);
+
+  vscode.workspace.textDocuments.forEach(validateDocument);
+
+  // test code action
+  vscode.languages.registerCodeActionsProvider('hasty', {
+    provideCodeActions(document, range, context, token) {
+      // get diagnostics
+      const diagnostics = diagnosticCollection.get(document.uri);
+      if (diagnostics === undefined) {
+        return;
+      }
+
+      // see if there are any diagnostics (aka parse errors) for this particular location in the document.
+      const diagnostic = diagnostics.find(d => d.range.contains(range.start));
+      if (diagnostic === undefined) {
+        return;
+      }
+
+      const parseError = getParseError(document);
+      if (parseError === null) {
+        return;
+      }
+      const {hash} = parseError;
+      const {expected} = parseError.hash;
+
+      if(expected.includes("'SEMI'")) {
+        const action = new vscode.CodeAction('Insert semicolon', vscode.CodeActionKind.QuickFix);
+        action.edit = new vscode.WorkspaceEdit();
+        action.edit.insert(document.uri, range.end, ';');
+        return [action];
+      }
+
+      if(expected.length === 1 && singleTokenInsertions[expected[0]]) {
+        const suggestion = singleTokenInsertions[expected[0]];
+
+        if(suggestion) {
+          const action = new vscode.CodeAction(`Insert ${suggestion}`, vscode.CodeActionKind.QuickFix);
+          action.edit = new vscode.WorkspaceEdit();
+          action.edit.insert(document.uri, range.end, suggestion);
+          return [action];
+        }
+      }
+
+      return [];
+    }
+  });
 }
 
 function getLintedText(document: vscode.TextDocument, space: string) {
