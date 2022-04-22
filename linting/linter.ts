@@ -33,6 +33,12 @@ export function lint(lexer: any, indentChars: string) {
       // space after
       case "func":
       case "class":
+        if (numNewLineBefore === 1 && prevToken.type === '}'){
+          lexedOutput += '\n';
+          lexedOutput += repeat(tab, indentLevel);
+        }
+        lexedOutput += content + " ";
+        break;
       case "if":
       case "case":
       case "static":
@@ -90,6 +96,10 @@ export function lint(lexer: any, indentChars: string) {
         lexedOutput += content + "\n" + repeat(tab, indentLevel); // end of line character
         break;
       case 'COMMENT':
+        if (numNewLineBefore === 1 && prevToken.type === '}'){
+          lexedOutput += '\n';
+          lexedOutput += repeat(tab, indentLevel);
+        }
         lexedOutput += content + repeat(tab, indentLevel);
         break;
       default:
