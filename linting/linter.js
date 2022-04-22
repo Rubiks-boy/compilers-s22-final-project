@@ -44,7 +44,7 @@ function lint(lexer, indentChars) {
             case '}':
                 if (!inString) {
                     // remove the new line if we have a series of }
-                    if (prevToken.type == '}') {
+                    if (prevToken.type === '}') {
                         lexedOutput = undoNewLine(tab, indentLevel, lexedOutput);
                     }
                     indentLevel -= 1;
@@ -72,13 +72,14 @@ function lint(lexer, indentChars) {
                 lexedOutput += content + repeat(tab, indentLevel);
                 break;
             case "else":
-                if (prevToken.type == '}') {
+                if (prevToken.type === '}') {
                     lexedOutput = undoNewLine(tab, indentLevel, lexedOutput);
                 }
                 lexedOutput += content;
                 break;
             // space after
             case "func":
+            case "class":
             case "if":
             case "case":
             case "static":
