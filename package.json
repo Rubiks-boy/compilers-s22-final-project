@@ -2,7 +2,7 @@
     "name": "hasty",
     "displayName": "Hasty",
     "description": "Extension for CS132 Hasty language",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "publisher": "SantiSantichaivekinDev",
     "engines": {
         "vscode": "^1.66.0"

@@ -11,6 +11,7 @@ Hasty
 - Format Document
 - Error Diagnosis
 - Basic Autocomplete
+- Folding
 
 Tasty
 - Syntax Hilighting
