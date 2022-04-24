@@ -71,7 +71,7 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var hasty = (function(){
+var hastyFolding = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[2,57],$V1=[1,4],$V2=[1,5],$V3=[2,59],$V4=[1,16],$V5=[16,50],$V6=[1,24],$V7=[2,72],$V8=[1,32],$V9=[1,33],$Va=[1,28],$Vb=[1,29],$Vc=[1,30],$Vd=[1,31],$Ve=[1,39],$Vf=[13,15,16,17,23,45,50,52],$Vg=[2,80],$Vh=[1,43],$Vi=[1,44],$Vj=[1,45],$Vk=[1,49],$Vl=[5,59,61],$Vm=[1,60],$Vn=[1,62],$Vo=[1,63],$Vp=[1,64],$Vq=[1,75],$Vr=[1,66],$Vs=[1,70],$Vt=[2,12],$Vu=[1,67],$Vv=[1,68],$Vw=[1,69],$Vx=[1,71],$Vy=[1,72],$Vz=[1,73],$VA=[1,74],$VB=[1,76],$VC=[1,77],$VD=[7,11,12,14,15,18,19,23,24,25,26,27,28,29,42,43,47,48],$VE=[1,93],$VF=[1,92],$VG=[1,94],$VH=[1,95],$VI=[1,96],$VJ=[1,97],$VK=[1,98],$VL=[1,99],$VM=[1,100],$VN=[1,101],$VO=[1,102],$VP=[1,103],$VQ=[1,104],$VR=[1,105],$VS=[1,106],$VT=[13,16,17,20,23,28,30,31,32,33,34,35,36,37,38,39,40,41,44,45,50,52],$VU=[1,118],$VV=[2,44],$VW=[13,16,17,20,23,28,30,31,32,33,34,35,36,37,38,39,40,44,45,50,52],$VX=[13,16,17,20,23,28,30,33,34,35,36,37,38,39,40,44,45,50,52],$VY=[13,16,17,20,23,39,40,45,50,52],$VZ=[24,59,75,76];
 var parser = {trace: function trace () { },
 yy: {},
@@ -87,10 +87,10 @@ case 1:
  return $$[$0-1]; 
 break;
 case 2:
- this.$ = {statementType: 'If', condition: $$[$0-1], ifCase: $$[$0], elseCase: {statementType: 'Block', block: []}, startLine: this._$.first_line, endLine: this._$.last_line, hasElse: 0}; 
+ this.$ = {statementType: 'If', condition: $$[$0-1], ifCase: $$[$0], elseCase: {statementType: 'Block', block: []}, startLine: this._$.first_line, endLine: this._$.last_line}; 
 break;
 case 3:
- this.$ = {statementType: 'If', condition: $$[$0-3], ifCase: $$[$0-2], elseCase: $$[$0], startLine: this._$.first_line, endLine: this._$.last_line, hasElse: 1}; 
+ this.$ = {statementType: 'If', condition: $$[$0-3], ifCase: $$[$0-2], elseCase: $$[$0], startLine: this._$.first_line, endLine: this._$.last_line}; 
 break;
 case 4:
  this.$ = {statementType: 'Block', block: $$[$0], startLine: this._$.first_line, endLine: this._$.last_line}; 
@@ -276,7 +276,7 @@ case 71:
  this.$ = {identifier: $$[$0-3], type: $$[$0-1]}; 
 break;
 case 74:
- this.$ = {parameters: $$[$0-3], superInit: $$[$0-1], body: $$[$0], startLine: this._$.first_line, endLine: this._$.last_line}; 
+ this.$ = {parameters: $$[$0-3], superInit: $$[$0-1], body: $$[$0]}; 
 break;
 case 75:
  this.$ = undefined 
@@ -897,9 +897,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = hasty;
-exports.Parser = hasty.Parser;
-exports.parse = function () { return hasty.parse.apply(hasty, arguments); };
+exports.parser = hastyFolding;
+exports.Parser = hastyFolding.Parser;
+exports.parse = function () { return hastyFolding.parse.apply(hastyFolding, arguments); };
 exports.main = function commonjsMain (args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

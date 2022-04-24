@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code belo
+import { parse } from 'path';
 import * as vscode from 'vscode';
 import * as linter from './linting/hasty-linter';
 
@@ -12,7 +13,7 @@ let diagnosticCollection: vscode.DiagnosticCollection;
 
 // whenever the parser says that only one token is expected,
 // we'll offer to autofill that token.
-const singleTokenInsertions : any = {
+const singleTokenInsertions: any = {
   "'EQ'": ' = ',
   "'QUERYQUERY'": ' ?? ',
   "'ARROW'": ' -> ',
@@ -33,31 +34,31 @@ const singleTokenInsertions : any = {
   "'INIT'": ' init ',
 };
 
-const getParseError = (document: vscode.TextDocument): {diagnostic: vscode.Diagnostic, range: vscode.Range, hash: any} | null => {
-    const text = document.getText();
-    try {
-      parser.parse(text);
-    } catch (e: any) {
-      const {hash} = e;
-      const {loc, line, expected, text, token} = e.hash;
-      const {first_line: firstLine, last_line: lastLine, first_column: firstCol, last_column: lastCol} = loc;
-      const startPos = new vscode.Position(firstLine - 1, firstCol);
-      const endPos = new vscode.Position(lastLine - 1, lastCol);
-      const range = new vscode.Range(startPos, endPos);
-      const message = `Parse error on line ${line} at '${text}': expected ${expected}`;
-      const diagnostic = new vscode.Diagnostic(range, message, vscode.DiagnosticSeverity.Error);
-      return {diagnostic, range, hash: e.hash};
-    }
-    return null;
+const getParseError = (document: vscode.TextDocument): { diagnostic: vscode.Diagnostic, range: vscode.Range, hash: any } | null => {
+  const text = document.getText();
+  try {
+    parser.parse(text);
+  } catch (e: any) {
+    const { hash } = e;
+    const { loc, line, expected, text, token } = e.hash;
+    const { first_line: firstLine, last_line: lastLine, first_column: firstCol, last_column: lastCol } = loc;
+    const startPos = new vscode.Position(firstLine - 1, firstCol);
+    const endPos = new vscode.Position(lastLine - 1, lastCol);
+    const range = new vscode.Range(startPos, endPos);
+    const message = `Parse error on line ${line} at '${text}': expected ${expected}`;
+    const diagnostic = new vscode.Diagnostic(range, message, vscode.DiagnosticSeverity.Error);
+    return { diagnostic, range, hash: e.hash };
+  }
+  return null;
 };
 
 const validateDocument = (document: vscode.TextDocument) => {
   diagnosticCollection.clear();
-  if (document.languageId !== 'hasty') {return;}
+  if (document.languageId !== 'hasty') { return; }
 
   const parseError = getParseError(document);
   if (parseError) {
-    const {diagnostic} = parseError;
+    const { diagnostic } = parseError;
     diagnosticCollection.set(document.uri, [diagnostic]);
   }
 };
@@ -86,7 +87,7 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(disposable);
-  
+
   const parsing = vscode.commands.registerCommand('cs132-hasty.parse', () => {
     // The code you place here will be executed every time your command is executed
     // Display a message box to the user
@@ -116,6 +117,25 @@ export function activate(context: vscode.ExtensionContext) {
       }
       var output = getLintedText(document, space);
       return [output];
+    }
+  });
+
+  vscode.languages.registerFoldingRangeProvider('hasty', {
+    provideFoldingRanges(document: vscode.TextDocument,
+      context: vscode.FoldingContext,
+      token: vscode.CancellationToken) {
+      try {
+        var text = document.getText();
+        var parseTree = parser.parse(text);
+        var foldings = parseTreeTraversal(parseTree, []);
+
+        var commentFoldings = findLineNumsForComments(text);
+        foldings = foldings.concat(commentFoldings);
+        return foldings;
+      } catch (e: any) {
+        console.log('exception', e);
+        return [];
+      }
     }
   });
 
@@ -170,20 +190,20 @@ export function activate(context: vscode.ExtensionContext) {
       if (parseError === null) {
         return;
       }
-      const {hash} = parseError;
-      const {expected} = parseError.hash;
+      const { hash } = parseError;
+      const { expected } = parseError.hash;
 
-      if(expected.includes("'SEMI'")) {
+      if (expected.includes("'SEMI'")) {
         const action = new vscode.CodeAction('Insert semicolon', vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();
         action.edit.insert(document.uri, range.end, ';');
         return [action];
       }
 
-      if(expected.length === 1 && singleTokenInsertions[expected[0]]) {
+      if (expected.length === 1 && singleTokenInsertions[expected[0]]) {
         const suggestion = singleTokenInsertions[expected[0]];
 
-        if(suggestion) {
+        if (suggestion) {
           const action = new vscode.CodeAction(`Insert ${suggestion}`, vscode.CodeActionKind.QuickFix);
           action.edit = new vscode.WorkspaceEdit();
           action.edit.insert(document.uri, range.end, suggestion);
@@ -196,9 +216,97 @@ export function activate(context: vscode.ExtensionContext) {
   });
 }
 
+function findLineNumsForComments(text: string) {
+  lexer.setInput(text);
+  var token = lexer.lex();
+  var seenComment = false;
+  var commentSections = [];
+  while (token !== 1) {
+    if (token.type === 'NEWLINE') {
+      token = lexer.lex();
+      continue;
+    }
+    if (token.type === 'COMMENT') {
+      var lineNum = token.lineNum - 1;
+
+      if (seenComment) {
+        commentSections[commentSections.length - 1][1] = lineNum;
+      } else {
+        commentSections.push([lineNum, lineNum]);
+
+      }
+      seenComment = true;
+    } else {
+      seenComment = false;
+    }
+    token = lexer.lex();
+  }
+  var foldings = [];
+  for (const [start, end] of commentSections) {
+    foldings.push(new vscode.FoldingRange(start, end, vscode.FoldingRangeKind.Comment));
+  }
+  console.log(commentSections.toString());
+  return foldings;
+}
+
+function generateFoldingRange(parseTree: any, modifyStart = 0, modifyEnd = 0) {
+  var start = parseTree.startLine - 1 + modifyStart;
+  var end = parseTree.endLine - 1 + modifyEnd;
+  var folding = new vscode.FoldingRange(start, end, vscode.FoldingRangeKind.Region);
+  return folding;
+}
+
+function parseTreeTraversal(parseTree: any, foldings: vscode.FoldingRange[]) {
+  if (parseTree instanceof Array) {
+    for (const item of parseTree) {
+      foldings = parseTreeTraversal(item, foldings);
+    }
+  } else if (parseTree instanceof Object) {
+    if (parseTree.hasOwnProperty('block')) {
+      foldings = parseTreeTraversal(parseTree.block, foldings);
+    } else if (parseTree.hasOwnProperty('startLine')) {
+      foldings.push(generateFoldingRange(parseTree));
+
+      if (parseTree.hasOwnProperty('statementType')) {
+        switch (parseTree.statementType) {
+          case 'If':
+            var ifCase = parseTree.ifCase;
+            var elseCase = parseTree.elseCase;
+            foldings.pop();
+            var modifyEndOfIf = parseTree.hasElse === 1 ? -1 : 0;
+            foldings.push(generateFoldingRange(ifCase, 0, modifyEndOfIf));
+            foldings.push(generateFoldingRange(elseCase));
+            foldings = parseTreeTraversal(ifCase.block, foldings);
+            foldings = parseTreeTraversal(elseCase.block, foldings);
+            break;
+          case 'While':
+            foldings = parseTreeTraversal(parseTree.body, foldings);
+            break;
+        }
+      } else if (parseTree.hasOwnProperty('declType')) {
+        switch (parseTree.declType) {
+          case 'Class':
+            foldings = parseTreeTraversal(parseTree.constructor, foldings);
+            foldings = parseTreeTraversal(parseTree.methods, foldings);
+            break;
+          case 'Func':
+            foldings = parseTreeTraversal(parseTree.body, foldings);
+            break;
+        }
+      } else if (parseTree.hasOwnProperty('type') || parseTree.hasOwnProperty('parameters')) {
+        var body = parseTree.body;
+        foldings = parseTreeTraversal(body, foldings);
+      }
+    }
+  }
+  return foldings;
+}
+
 function getLintedText(document: vscode.TextDocument, space: string) {
   var input = document.getText();
   lexer.setInput(input);
+  console.log('hii');
+  console.log(Object.keys(lexer));
   var output = linter.lint(lexer, space);
   var startPos = new vscode.Position(0, 0);
   var endPos = document.lineAt(document.lineCount - 1).range.end;
