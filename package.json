@@ -19,6 +19,7 @@
         "onCommand:cs132-hasty.parse",
         "onLanguage:hasty"
     ],
+    "icon": "logo.png",
     "main": "./out/extension.js",
     "contributes": {
         "languages": [
